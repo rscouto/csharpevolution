@@ -20,7 +20,7 @@
 * **Coleções 01 (System.Collections)** -  Arrays, Dictionary, SortedDictionary, HashSet, Listas, SortedList, Queues e Stack. Quais são as diferenças entre esses tipos, tem que métodos distintos, qual o uso indicado?
 * **Teste 02** - **Console application** - Evolução da Calculadora Adicionando as operações: Potenciação, Raiz Quadrada e Cúbica, Calculo de Area de Algumas figuras(Triangulo, Quadrado, Circulo), Calculo de Volume em Metros Cubicos e Conversão de Base (Binário, Decimal e Hexadecimal).
 
-> **Desafio Semana 01** - Criar um roteiro básico e gravar um resumo da semana (>= 20min), passando por cada tópico em sequência.
+> **Desafio Semana 01** - Criar um roteiro básico e gravar um resumo **em áudio** da semana (>= 20min), passando por cada tópico em sequência.
 
 ### Semana 02 - Rastreando Problemas e Revisitando Orientação a Objetos
 * **Teste 03 Exceptions** - O que é uma exceção, como identificar onde podem ocorrer, explicar como afetam o fluxo de execução - Exemplo Implementar (Capturar, Lançar, Relançar e Suprimir)
