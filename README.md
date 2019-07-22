@@ -1,12 +1,12 @@
 # C# Evolution
-08 Semanas de intensivo estudo e dedicação para evoluçõa técnica, aprimoramento de conceitos usando a linguagem C#, Sql, Lógia de Programação, Testes, Revisão de conceitos e outros conceitos.
+08 Semanas de intensivo estudo e dedicação para evoluçõa técnica, aprimoramento de conceitos usando a linguagem C#, Sql, Lógia de Programação, Testes e Revisão de conceitos.
 
 ## Instruções Básicas
 * Todo resumo e parte conceitual devem estar no projeto na pasta de cada teste e exercio, já presente no projeto.
 * Mesmo que a excplicação encontrada seja boa, tente descrever com suas proprias palavras de maneira mais resumida possivel. Nunca copie redigite, parece bobagem mas não é!
-* Cite a fonte que você achou a explicação e tente elaborar sempre exemplo diferentes.
+* Cite a fonte que você achou a explicação e tente elaborar sempre exemplo diferentes, quando possivel.
 * Não pule etapas elas foram pensadas para serem feitas em sequência.
-* Divirta-se e sempre vá alêm do que foi pedido! :)
+* Divirta-se e sempre vá além do que foi pedido! :)
 
 ## Cronograma inicial
 
