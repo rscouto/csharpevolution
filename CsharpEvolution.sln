@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28917.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharpEvolution", "src\CharpEvolution\CharpEvolution.csproj", "{B0F6AB7C-1AD9-4933-98E3-37F737809FD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpEvolition.WeeklyChallenges", "src\CsharpEvolition.WeeklyChallenges\CsharpEvolition.WeeklyChallenges.csproj", "{226B4795-485D-4458-8AD6-81925222D705}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0F6AB7C-1AD9-4933-98E3-37F737809FD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F6AB7C-1AD9-4933-98E3-37F737809FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F6AB7C-1AD9-4933-98E3-37F737809FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F6AB7C-1AD9-4933-98E3-37F737809FD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226B4795-485D-4458-8AD6-81925222D705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226B4795-485D-4458-8AD6-81925222D705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226B4795-485D-4458-8AD6-81925222D705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226B4795-485D-4458-8AD6-81925222D705}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D48728B-3159-4FBE-A2D6-2C320753FC6C}
+	EndGlobalSection
+EndGlobal
