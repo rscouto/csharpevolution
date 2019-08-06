@@ -1,8 +1,8 @@
 # C# Evolution
-08 Semanas de intensivo estudo e dedicação para evolução técnica, aprimoramento de conceitos usando a linguagem C#, Sql, Lógica de Programação, Testes e Revisão de conceitos.
+08 Semanas de intensivo estudo e dedicação para evolução técnica, aprimoramento de conceitos usando a linguagem C#, Sql, lógica de programação, testes e revisão de conceitos.
 
 ## Instruções Básicas
-* Todo resumo e parte conceitual devem estar na pasta de cada teste e exercio, já presentes no projeto.
+* Todo resumo e parte conceitual devem estar na pasta de cada teste e exercício, já presentes no projeto.
 * Mesmo que a explicação encontrada seja boa, tente descrever com suas proprias palavras, de maneira mais resumida possivel. Nunca copie, redigite, parece bobagem mas não é!
 * Cite a fonte que você achou a explicação e tente elaborar sempre exemplos diferentes, quando possivel.
 * Não pule etapas. Elas foram pensadas para serem feitas em sequência.
@@ -11,7 +11,7 @@
 ## Cronograma inicial
 
 ### Semana 01 - Introdução Relampago :)
-* **Sintaxe Básica 01:** **Namespaces**, **Classes**, **Structs**, **Principais Tipos Primitivos**, **Principais Tipos de Referência**, **Tipo de Acessibilidade(Classes e métodos)**.
+* **Sintaxe Básica 01:** [Namespaces](https://docs.microsoft.com/pt-br/dotnet/csharp/programming-guide/namespaces/), [Classes e Structs](https://docs.microsoft.com/pt-br/dotnet/csharp/programming-guide/classes-and-structs/classes), [Tipos Primitivos e Tipos de Referência](https://docs.microsoft.com/pt-br/dotnet/csharp/tour-of-csharp/types-and-variables), [Tipo de Acessibilidade(Classes e métodos)](https://docs.microsoft.com/pt-br/dotnet/csharp/language-reference/keywords/accessibility-levels).
 * **Sintaxe Básica 02:** **Construtores**, **Destrutores**, **Condicionais**, **Loops**, **Interrupção de Loops**, **Métodos**.
 * **Teste 01 (Aritméticos e Lógicos)** - **Console application** - Calculadora com as principais operações, e um simples menu. Dica: Explore a classe console.
 * Descreva as principais funções e o que encontramos do ponto de vista macro (Só o que contém, de forma mais abrangente) nos namespaces e destaque no mínimo 03 classes que podemos trabalhar em cada um deles: System.Text, System.Threading, System.Linq, System.IO, System.Data, System.Security, System.Diagnostics, System.Runtime, System.Globalization, System.Buffers;
