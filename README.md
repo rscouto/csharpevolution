@@ -96,6 +96,16 @@ Select FROM GetDate();
 
 ### Temas complementares
 
+* LINQ: [Query Syntax, Method Syntax](https://docs.microsoft.com/pt-br/dotnet/csharp/programming-guide/concepts/linq/query-syntax-and-method-syntax-in-linq), [Lazy Evaluation](https://weblogs.asp.net/dixin/linq-to-objects-deferred-execution-lazy-evaluation-and-eager-evaluation), [MoreLinq](http://morelinq.github.io/)
+* [IEnumerable](https://docs.microsoft.com/pt-br/dotnet/api/system.collections.generic.ienumerable-1?view=netframework-4.8) e [IQueryable](https://docs.microsoft.com/pt-br/dotnet/api/system.linq.iqueryable?view=netframework-4.8)
+* [Metaprogramação](https://pt.wikipedia.org/wiki/Metaprograma%C3%A7%C3%A3o): [Reflection](https://docs.microsoft.com/pt-br/dotnet/framework/reflection-and-codedom/reflection) e [Expression Tree](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/expression-trees/) ([C# AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree))
+* Tipos de Polimorfismo: [Subtyping, Parametric, Overloading, Coercion](https://medium.com/red-ventures-br-tech/6-tipos-de-polimorfismo-7787080e8857)
+* [Funções Puras](https://weblogs.asp.net/dixin/functional-csharp-pure-function)
+* [Herança vs Composição](https://blog.caelum.com.br/como-nao-aprender-orientacao-a-objetos-heranca/)
+* [Padrões de Projeto de software Orientado a Objetos (GOF)](https://www.dofactory.com/net/design-patterns)
+* [.NET Compiler Platform ("Roslyn")](https://github.com/dotnet/roslyn/wiki/Roslyn-Overview)
+
 ### Leituras Complementares
 
 * https://blog.ploeh.dk/2015/04/13/less-is-more-language-features/
+* https://github.com/dotnet/csharplang/blob/master/Language-Version-History.md
