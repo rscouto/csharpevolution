@@ -106,7 +106,7 @@ Select FROM GetDate();
 * [.NET Compiler Platform ("Roslyn")](https://github.com/dotnet/roslyn/wiki/Roslyn-Overview)
 * [Common Language Runtime (CLR)](https://docs.microsoft.com/en-us/dotnet/standard/clr)
 * [Dynamic Language Runtime (DLR)](https://docs.microsoft.com/en-us/dotnet/framework/reflection-and-codedom/dynamic-language-runtime-overview)
-* [Common Intermediate Language (CLI)](https://www.geeksforgeeks.org/cil-or-msil-microsoft-intermediate-language-or-common-intermediate-language/)
+* [Common Intermediate Language (CIL)](https://www.geeksforgeeks.org/cil-or-msil-microsoft-intermediate-language-or-common-intermediate-language/)
 
 ### Leituras Complementares
 
