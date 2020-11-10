@@ -1,4 +1,4 @@
-# C# Evolution
+# C# Evolution.
 08 Semanas de intensivo estudo e dedicação para evolução técnica, aprimoramento de conceitos usando a linguagem C#, Sql, lógica de programação, testes e revisão de conceitos.
 
 ## Instruções Básicas
