@@ -47,3 +47,57 @@ Operadores lógicos boolianos - que executam operações lógicas com bool opera
 Operadores bit a bit e shift - que executam operações bit a bit ou shift com operandos dos tipos integrais
 Operadores de igualdade - que verificam se seus operandos são iguais ou não
 
+Níveis de Acessibilidade
+
+Classes and Methods:
+Public - o acesso não seja restrito em nenhuma parte do nosso código;
+Internal - Acesso somente no mesmo namespace
+Protected - possibilidade de acesso apenas dentro da própria classe ou dentro de 
+uma classe derivada dessa mesma;
+Protected Internal - somente no mesmo namespace, a própria classe e classes derivadas desta
+Private Protected - Somente a classe e classes derivadas desta no mesmo assembly tem acesso, fora do assemblu, mesmo que derivem desta classe não
+Private - Somente a classe tem acesso 
+
+Construtores
+
+São chamados sempre que classes ou structs são criados. Pode haver mais de um construtor na mesma classe 
+com argumentos diferentes, permitem ao programador definir valores padrão e limite a instanciação.
+Apresentam nome igual alo nome de seu tipo e não apresenta um tipo de retorno.
+
+Destrutores
+
+Ou Finalizadores são utilizados para executar limpeza final quando um objeto é coletado pelo Garbage 
+Collector. Não podem ser definidos em structs (que são value de qualquer forma, GC limpam o heap), uma classe pode 
+apenas ter um destrutor e estes não podem ser herdades ou apresentar sobrecarga. Não podem ser chamados e são
+invocados automaticamente, não apresenta modificadores ou parâmetros.
+Ex:
+class Car
+{
+    ~Car()  // finalizer
+    {
+        // cleanup statements...
+    }
+}
+
+Condicionais
+
+
+
+Loops
+
+
+Métodos
+
+São blocos de código contendo uma série de instruções. O programa 
+por sua vez executa as instruções quando é feita uma chamada para aquele método,
+especificando argumentos necessários para o seu funcionamento. 
+Quanto a sua assinatura:
+Podem ser declarados em classes, records ou structs, apresentando acesso public ou private, o default
+é private. Podem ainda ser abstract ou sealed e seu retorno default caso omitido é void.
+É preciso um nome para o método e quaisquer parâmetros que se façam necessários, caso sejam.
+Tais parâmetros ficam dentro dos parênteses do método, após seu nome, e são separados por vírgula.
+
+podem ainda ser estáticos (fazendo ref ao nome do tipoao qual o método pertence)
+ou de instância.
+
+
