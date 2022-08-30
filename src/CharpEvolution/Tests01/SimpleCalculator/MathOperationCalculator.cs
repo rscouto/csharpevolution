@@ -17,7 +17,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             return numOne - numTwo;
         }
 
-        public static long CalculateMultiply(long numOne, long numTwo)
+        public static long CalculateMultiplication(long numOne, long numTwo)
         {
             return numOne * numTwo;
         }

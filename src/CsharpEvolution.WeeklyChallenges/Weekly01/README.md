@@ -100,4 +100,13 @@ Tais parâmetros ficam dentro dos parênteses do método, após seu nome, e são
 podem ainda ser estáticos (fazendo ref ao nome do tipoao qual o método pertence)
 ou de instância.
 
+--------------------------------------------------------------------------------------
+Namespaces
+
+System.Text
+
+Contém classes que representam as codificações de caracteres ASCII e Unicode, classes base abstratas para 
+conversão de blocos de caracteres entre blocos de bytes e uma classe auxiliar que manipula e formata objetos 
+String sem criar instâncias de String intermediárias.
+
 
