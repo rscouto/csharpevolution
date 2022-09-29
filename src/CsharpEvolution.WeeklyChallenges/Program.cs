@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CsharpEvolition.WeeklyChallenges
+namespace CsharpEvolution.WeeklyChallenges
 {
     class Program
     {

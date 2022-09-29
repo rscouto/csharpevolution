@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CharpEvolution
+namespace CsharpEvolution
 {
     class Program
     {
