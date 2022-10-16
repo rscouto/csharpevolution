@@ -1,39 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
 
-namespace CsharpEvolution.Tests01.SimpleCalculator
+namespace CsharpEvolution.Tests01.SimpleCalculator;
+
+public class MathOperationCalculator
 {
-    
-    public static class MathOperationCalculator //: IMathOperationCalculator
+    private readonly IOperation _mathOperation;
+    public MathOperationCalculator(string operation, IOperation mathOperation)
     {
-        public static long CalculateSum(long numOne, long numTwo)
-        {
-            return numOne + numTwo;
-        }
+        _mathOperation = mathOperation;
+    }
 
-        public static long CalculateSubtraction(long numOne, long numTwo)
-        {
-            return numOne - numTwo;
-        }
-
-        public static long CalculateMultiplication(long numOne, long numTwo)
-        {
-            return numOne * numTwo;
-        }
-
-        public static long CalculateDivision(long numOne, long numTwo)
-        {
-            try
-            {
-                return numOne / numTwo;
-            }
-            catch (DivideByZeroException)
-            {
-                Console.WriteLine(new DivideByZeroException("Não é possível dividir por Zero"));
-                throw;
-            }
-
-        }
+    public long Calculate(string mathOperation, long numOne, long numTwo)
+    {
+        return _mathOperation.Calculate(numOne, numTwo);
     }
 }

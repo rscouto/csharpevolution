@@ -1,23 +1,63 @@
-﻿using System;
+﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+using CsharpEvolution.Tests01.SimpleCalculator.Factory;
+using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CsharpEvolution.Tests01.SimpleCalculator
 {
-    public class SimpleCalculator
+    public partial class SimpleCalculator
     {
-        readonly string quit = "Q";
-        readonly IEnumerable<string> mathOperations = new string[] { "SOMA", "SUBTRAÇÃO",
+        private readonly string quit = "Q";
+        private readonly IOperation _operationType;
+        private readonly IMemoryCache _cache;
+        private const string operationKey = "operation";
+        private readonly IEnumerable<string> mathOperations = new string[] { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
-        public void Calculate()//repensar modulariza~ção deste método e nome, o calculate vem depois
+        public SimpleCalculator(IMemoryCache cache)
         {
-            long number1;
-            long number2;
+            _cache = cache;
+        }
+
+        public void Calculate()
+        {
+            long number1, number2, result;
             string mathOperation;
+
+            var isValid = CollectOperationInfo(out number1, out number2, out mathOperation);
+
+            if (isValid)
+            {
+                result = MathOperationFactory.Calculate(mathOperation, _operationType, number1, number2);
+
+                var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
+                _cache.Set(operationKey, performedOperation);
+                Console.WriteLine($"O resultado da sua operação é: {result}");
+                Console.WriteLine("Deseja efetuar mais alguma operação? S/N");
+                var input = Console.ReadLine().ToUpper();
+
+                Console.Clear();
+
+                if (input == "S") { Calculate(); }
+                EscapeApplication();
+
+
+            }
+
+            //remover daqui pra baixo
+            //Console.WriteLine(_cache.TryGetValue(operationKey, out performedOperation));
+            //var list = new List<PerformedOperation>() { performedOperation };
+            //Console.WriteLine(list.Count);
+
+        }
+
+        private bool CollectOperationInfo(out long number1, out long number2, out string mathOperation)
+        {
             StringBuilder number = new StringBuilder();
             bool isValidOperation = false;
-            long result = 0;
 
             Console.WriteLine("Digite o primeiro número para a operação:");
             number.Append(Console.ReadLine());
@@ -33,43 +73,29 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 "\n* Soma \n* Subtração \n* Multiplicação \n* Divisão");
 
             mathOperation = Console.ReadLine().ToUpper();
-            isValidOperation = OperationValidator(mathOperation, isValidOperation);
 
-            result = MathOperation.Calculate(mathOperation, number1, number2);
-
-            Console.WriteLine($"O resultado da sua operação é: {result}");
-        }
-
-        public class MathOperation
-        {
-            public static long Calculate(string mathOperation, long number1, long number2)
-            {
-                MathOperationsFactory mathOperationsFactory = new MathOperationsFactory(mathOperation);
-                return mathOperationsFactory.Calculate(mathOperation, number1, number2);
-            }
+            return OperationValidator(mathOperation, isValidOperation);
         }
 
         private bool OperationValidator(string mathOperation, bool isValidOperation)
         {
-            foreach (string operation in mathOperations)//iiso aqui deveria estar numa classe de mathOperations
+            foreach (string operation in mathOperations)
             {
                 if (mathOperation.ToUpper() == operation)
                 {
                     isValidOperation = true;
                     break;
                 }
-                else
-                {
-                    continue;
-                }
+                else { continue; }
 
                 Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
                     "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
 
-                if (Console.ReadLine().ToUpper() == quit) { EscapeApplication(); }
-                OperationValidator(operation, isValidOperation);
-            }
+                var input = Console.ReadLine().ToUpper();
 
+                if (input == quit.ToUpper()) { EscapeApplication(); }
+                else { OperationValidator(input, isValidOperation); }
+            }
             return isValidOperation;
         }
 
@@ -81,7 +107,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             if (!isValidNumber)
             {
-                Console.WriteLine("Digite um número válido. Forneça o número para a operação ou" +
+                Console.WriteLine("Digite um número válido. Forneça o número para a operação ou " +
                     "pressione 'Q' para sair da aplicação:");
 
                 var input = Console.ReadLine();
@@ -91,10 +117,10 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                     EscapeApplication();
                 }
 
-                NumberValidator(input);   
+                NumberValidator(input);
             }
-            return numberToLong;
 
+            return numberToLong;
         }
 
         private void EscapeApplication()
