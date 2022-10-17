@@ -69,7 +69,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             if(listOfOperations.Count % 2 == 0) 
             { 
                 WriteCache(listOfOperations);
-                listOfOperations.Clear();   
                 //_cache.Dispose();
             }
         }
@@ -78,17 +77,16 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         {
             
             var inCacheOperations = _cache.Get(operationKey);
-            _cache.Remove(operationKey);    
 
-            List<object> collectionOfOperations = new List<object>();
-            collectionOfOperations.Add(_cache.Get(operationKey));
+            //List<object> collectionOfOperations = new List<object>();
+            //collectionOfOperations.Add(_cache.Get(operationKey));
             StringBuilder stringWithAllOperations = new StringBuilder();
 
             foreach (var operation in listOfOperations)
             {
                 itemCount++;
-                stringWithAllOperations.Append($"       {itemCount}       {operation.MathOperation}    " +
-                    $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}" );
+                stringWithAllOperations.Append($"{itemCount}       {operation.MathOperation}             " +
+                    $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}\n");
             }   
 
             stringWithAllOperations.AppendJoin("", stringWithAllOperations.ToString());
