@@ -5,7 +5,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator.Factory;
 
 public class MathOperationFactory
 {
-    public static long Calculate(string mathOperation, IOperation _operationType, long number1, long number2)
+    public static decimal Calculate(string mathOperation, IOperation _operationType, decimal number1, decimal number2)
     {
         switch (mathOperation)
         {

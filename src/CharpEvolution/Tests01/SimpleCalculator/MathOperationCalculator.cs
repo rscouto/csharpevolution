@@ -10,7 +10,7 @@ public class MathOperationCalculator
         _mathOperation = mathOperation;
     }
 
-    public long Calculate(string mathOperation, long numOne, long numTwo)
+    public decimal Calculate(string mathOperation, decimal numOne, decimal numTwo)
     {
         return _mathOperation.Calculate(numOne, numTwo);
     }

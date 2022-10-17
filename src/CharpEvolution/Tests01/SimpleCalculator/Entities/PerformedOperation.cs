@@ -2,7 +2,7 @@
 
 public class PerformedOperation
 {
-    public PerformedOperation(string mathOperation, long numOne, long? numTwo, long result)
+    public PerformedOperation(string mathOperation, decimal numOne, decimal? numTwo, decimal result)
     {
         MathOperation = mathOperation;
         NumOne = numOne;
@@ -11,7 +11,7 @@ public class PerformedOperation
     }
     
     public string MathOperation { get; set; }
-    public long NumOne { get; set; }
-    public long? NumTwo { get; set; }
-    public long Result { get; set; }
+    public decimal NumOne { get; set; }
+    public decimal? NumTwo { get; set; }
+    public decimal Result { get; set; }
 }

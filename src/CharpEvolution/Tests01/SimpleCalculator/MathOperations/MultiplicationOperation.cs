@@ -4,7 +4,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 
 public class MultiplicationOperation : IOperation
 {
-    public long Calculate(long numOne, long numTwo)
+    public decimal Calculate(decimal numOne, decimal numTwo)
     {
         return numOne * numTwo;
     }

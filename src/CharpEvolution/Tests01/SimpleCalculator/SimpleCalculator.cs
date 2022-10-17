@@ -4,17 +4,21 @@ using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace CsharpEvolution.Tests01.SimpleCalculator
 {
     public partial class SimpleCalculator
     {
-        private readonly string quit = "Q";
+        private readonly string _quit = "Q";
+        private long cacheCount = 0;
+        long itemCount = 0;
         private readonly IOperation _operationType;
         private readonly IMemoryCache _cache;
         private const string operationKey = "operation";
-        private readonly IEnumerable<string> mathOperations = new string[] { "SOMA", "SUBTRAÇÃO",
+        private List<PerformedOperation> listOfOperations = new List<PerformedOperation>();
+        private readonly IEnumerable<string> _mathOperations = new string[] { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
         public SimpleCalculator(IMemoryCache cache)
@@ -24,7 +28,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         public void Calculate()
         {
-            long number1, number2, result;
+            decimal number1, number2, result;
             string mathOperation;
 
             var isValid = CollectOperationInfo(out number1, out number2, out mathOperation);
@@ -34,7 +38,10 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 result = MathOperationFactory.Calculate(mathOperation, _operationType, number1, number2);
 
                 var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
-                _cache.Set(operationKey, performedOperation);
+
+
+                StoreInCache(performedOperation);
+
                 Console.WriteLine($"O resultado da sua operação é: {result}");
                 Console.WriteLine("Deseja efetuar mais alguma operação? S/N");
                 var input = Console.ReadLine().ToUpper();
@@ -43,8 +50,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
                 if (input == "S") { Calculate(); }
                 EscapeApplication();
-
-
             }
 
             //remover daqui pra baixo
@@ -54,7 +59,44 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         }
 
-        private bool CollectOperationInfo(out long number1, out long number2, out string mathOperation)
+        private void StoreInCache(PerformedOperation performedOperation)
+        {
+            listOfOperations.Add(performedOperation);
+            _cache.Set(operationKey, performedOperation);
+            cacheCount++;
+
+            if(listOfOperations.Count % 2 == 0) 
+            { 
+                WriteCache(listOfOperations);
+                listOfOperations.Clear();   
+                //_cache.Dispose();
+            }
+        }
+
+        private void WriteCache(List<PerformedOperation> listOfOperations)
+        {
+            
+            var inCacheOperations = _cache.Get(operationKey);
+            _cache.Remove(operationKey);    
+
+            List<object> collectionOfOperations = new List<object>();
+            collectionOfOperations.Add(_cache.Get(operationKey));
+            StringBuilder stringWithAllOperations = new StringBuilder();
+
+            foreach (var operation in listOfOperations)
+            {
+                itemCount++;
+                stringWithAllOperations.Append($"       {itemCount}       {operation.MathOperation}    " +
+                    $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}" );
+            }   
+
+            stringWithAllOperations.AppendJoin("", stringWithAllOperations.ToString());
+
+            File.WriteAllText("MathOperations.txt", stringWithAllOperations.ToString().Trim());
+
+        }
+
+        private bool CollectOperationInfo(out decimal number1, out decimal number2, out string mathOperation)
         {
             StringBuilder number = new StringBuilder();
             bool isValidOperation = false;
@@ -79,7 +121,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         private bool OperationValidator(string mathOperation, bool isValidOperation)
         {
-            foreach (string operation in mathOperations)
+            foreach (string operation in _mathOperations)
             {
                 if (mathOperation.ToUpper() == operation)
                 {
@@ -93,7 +135,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
                 var input = Console.ReadLine().ToUpper();
 
-                if (input == quit.ToUpper()) { EscapeApplication(); }
+                if (input == _quit.ToUpper()) { EscapeApplication(); }
                 else { OperationValidator(input, isValidOperation); }
             }
             return isValidOperation;
@@ -112,7 +154,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
                 var input = Console.ReadLine();
 
-                if (input.ToUpper() == quit.ToUpper())
+                if (input.ToUpper() == _quit.ToUpper())
                 {
                     EscapeApplication();
                 }
