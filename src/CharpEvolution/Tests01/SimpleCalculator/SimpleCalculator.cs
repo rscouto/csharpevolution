@@ -14,6 +14,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private readonly string _quit = "Q";
         private long cacheCount = 0;
         long itemCount = 0;
+        decimal numberToDecimal;
         private readonly IOperation _operationType;
         private readonly IMemoryCache _cache;
         private const string operationKey = "operation";
@@ -141,11 +142,9 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             return isValidOperation;
         }
 
-        private long NumberValidator(string number)
+        private decimal NumberValidator(string number)
         {
-            long numberToLong;
-
-            bool isValidNumber = long.TryParse(number, out numberToLong);
+            bool isValidNumber = decimal.TryParse(number, out numberToDecimal);
 
             if (!isValidNumber)
             {
@@ -159,10 +158,10 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                     EscapeApplication();
                 }
 
-                NumberValidator(input);
+                else { NumberValidator(input); }
             }
 
-            return numberToLong;
+            return numberToDecimal;
         }
 
         private void EscapeApplication()
