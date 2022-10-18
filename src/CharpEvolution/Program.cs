@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Data.SqlClient;
 
 namespace CharpEvolution
 {
@@ -33,13 +34,13 @@ namespace CharpEvolution
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureServices((Action<IServiceCollection>)(services =>
+                .ConfigureServices(services =>
                 {
                     services.AddScoped<Program>();
                     services.AddScoped<IOperationCache, OperationCache>();
 
                     services.AddMemoryCache();
-                }));
+                });
         }
     }
 }
