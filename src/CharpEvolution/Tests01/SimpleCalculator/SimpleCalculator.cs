@@ -9,12 +9,16 @@ using System.Text;
 
 namespace CsharpEvolution.Tests01.SimpleCalculator
 {
-    public partial class SimpleCalculator
+    public interface ISimpleCalculator
+    {
+        void Calculate();
+    }
+
+    public class SimpleCalculator : ISimpleCalculator
     {
         private readonly string _quit = "Q";
         private long cacheCount = 0;
         long itemCount = 0;
-        decimal numberToDecimal;
         private readonly IOperation _operationType;
         private readonly IMemoryCache _cache;
         private const string operationKey = "operation";
@@ -29,14 +33,12 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         public void Calculate()
         {
-            decimal number1, number2, result;
-            string mathOperation;
 
-            var isValid = CollectOperationInfo(out number1, out number2, out mathOperation);
+            var isValid = CollectOperationInfo(out var number1, out var number2, out var mathOperation);
 
             if (isValid)
             {
-                result = MathOperationFactory.Calculate(mathOperation, _operationType, number1, number2);
+                var result = MathOperationFactory.Calculate(mathOperation, _operationType, number1, number2);
 
                 var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
 
@@ -66,8 +68,8 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             _cache.Set(operationKey, performedOperation);
             cacheCount++;
 
-            if(listOfOperations.Count % 2 == 0) 
-            { 
+            if (listOfOperations.Count % 2 == 0)
+            {
                 WriteCache(listOfOperations);
                 //_cache.Dispose();
             }
@@ -75,7 +77,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         private void WriteCache(List<PerformedOperation> listOfOperations)
         {
-            
+
             var inCacheOperations = _cache.Get(operationKey);
 
             //List<object> collectionOfOperations = new List<object>();
@@ -87,7 +89,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 itemCount++;
                 stringWithAllOperations.Append($"{itemCount}       {operation.MathOperation}             " +
                     $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}\n");
-            }   
+            }
 
             stringWithAllOperations.AppendJoin("", stringWithAllOperations.ToString());
 
@@ -97,69 +99,62 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         private bool CollectOperationInfo(out decimal number1, out decimal number2, out string mathOperation)
         {
-            StringBuilder number = new StringBuilder();
-            bool isValidOperation = false;
-
             Console.WriteLine("Digite o primeiro número para a operação:");
-            number.Append(Console.ReadLine());
-            number1 = NumberValidator(number.ToString());
-            number.Clear();
+            number1 = NumberValidator(Console.ReadLine());
 
             Console.WriteLine("Digite o segundo número para a operação:");
-            number.Append(Console.ReadLine());
-            number2 = NumberValidator(number.ToString());
-            number.Clear();
+            number2 = NumberValidator(Console.ReadLine());
 
             Console.WriteLine("Digite uma das operações matemáticas a seguir:" +
                 "\n* Soma \n* Subtração \n* Multiplicação \n* Divisão");
 
             mathOperation = Console.ReadLine().ToUpper();
 
-            return OperationValidator(mathOperation, isValidOperation);
+            return OperationValidator(mathOperation);
         }
 
-        private bool OperationValidator(string mathOperation, bool isValidOperation)
+        private bool OperationValidator(string mathOperation)
         {
+            //TODO remover recursividade como no NumberValidator 
+            bool isValidOperation = false;
+
             foreach (string operation in _mathOperations)
             {
-                if (mathOperation.ToUpper() == operation)
+                if (mathOperation.Equals(operation, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    isValidOperation = true;
-                    break;
+                    return true;
                 }
-                else { continue; }
 
                 Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
                     "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
 
-                var input = Console.ReadLine().ToUpper();
+                mathOperation = Console.ReadLine();
 
-                if (input == _quit.ToUpper()) { EscapeApplication(); }
-                else { OperationValidator(input, isValidOperation); }
+                if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
+                else { OperationValidator(mathOperation); }
             }
-            return isValidOperation;
+            return false; ;
         }
 
-        private decimal NumberValidator(string number)
+        private decimal NumberValidator(string userInput)
         {
-            bool isValidNumber = decimal.TryParse(number, out numberToDecimal);
+            decimal number; 
 
-            if (!isValidNumber)
+            while (!decimal.TryParse(userInput, out number))
             {
                 Console.WriteLine("Digite um número válido. Forneça o número para a operação ou " +
                     "pressione 'Q' para sair da aplicação:");
 
-                var input = Console.ReadLine();
+                userInput = Console.ReadLine();
 
-                if (input.ToUpper() == _quit.ToUpper())
+                if (userInput.Equals(_quit, StringComparison.InvariantCultureIgnoreCase))
                 {
                     EscapeApplication();
                 }
-
-                else { NumberValidator(input); }
+                
             }
 
-            return numberToDecimal;
+            return number;
         }
 
         private void EscapeApplication()

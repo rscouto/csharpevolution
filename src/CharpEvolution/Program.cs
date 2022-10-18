@@ -3,19 +3,19 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Data.SqlClient;
+
 
 namespace CharpEvolution
 {
     class Program
     {
-        private readonly IMemoryCache _cache;
+        private readonly ISimpleCalculator _calculator;  
 
-        public Program(IMemoryCache cache)
+        public Program(ISimpleCalculator calculator)
         {
-            _cache = cache;
+            _calculator = calculator;
         }
-    
+
         static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
@@ -24,8 +24,7 @@ namespace CharpEvolution
 
         private void Run()
         {
-            SimpleCalculator calculator = new SimpleCalculator(_cache);
-            calculator.Calculate();
+            _calculator.Calculate();
 
             Console.ReadKey();
             System.Environment.Exit(0);
@@ -34,13 +33,13 @@ namespace CharpEvolution
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
+                .ConfigureServices((services =>
                 {
                     services.AddScoped<Program>();
                     services.AddScoped<IOperationCache, OperationCache>();
-
+                    services.AddScoped<ISimpleCalculator, SimpleCalculator>();
                     services.AddMemoryCache();
-                });
+                }));
         }
     }
 }
