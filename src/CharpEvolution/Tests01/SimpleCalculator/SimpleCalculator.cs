@@ -20,13 +20,13 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private long cacheCount = 0;
         long itemCount = 0;
         private readonly IOperation _operationType;
-        private readonly IMemoryCache _cache;
+        private readonly IOperationCache _cache;
         private const string operationKey = "operation";
         private List<PerformedOperation> listOfOperations = new List<PerformedOperation>();
         private readonly IEnumerable<string> _mathOperations = new string[] { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
-        public SimpleCalculator(IMemoryCache cache)
+        public SimpleCalculator(IOperationCache cache)
         {
             _cache = cache;
         }
@@ -65,26 +65,23 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private void StoreInCache(PerformedOperation performedOperation)
         {
             listOfOperations.Add(performedOperation);
-            _cache.Set(operationKey, performedOperation);
+            _cache.AddToCache(listOfOperations);
             cacheCount++;
 
             if (listOfOperations.Count % 2 == 0)
             {
-                WriteCache(listOfOperations);
+                WriteCache();
                 //_cache.Dispose();
             }
         }
 
-        private void WriteCache(List<PerformedOperation> listOfOperations)
+        private void WriteCache()
         {
-
-            var inCacheOperations = _cache.Get(operationKey);
-
-            //List<object> collectionOfOperations = new List<object>();
-            //collectionOfOperations.Add(_cache.Get(operationKey));
+            var inCacheOperations = _cache.GetOperations();
+                        
             StringBuilder stringWithAllOperations = new StringBuilder();
 
-            foreach (var operation in listOfOperations)
+            foreach (var operation in inCacheOperations)
             {
                 itemCount++;
                 stringWithAllOperations.Append($"{itemCount}       {operation.MathOperation}             " +

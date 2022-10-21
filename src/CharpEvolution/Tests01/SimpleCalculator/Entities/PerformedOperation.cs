@@ -1,7 +1,13 @@
-﻿namespace CsharpEvolution.Tests01.SimpleCalculator.Entities;
+﻿using System;
+
+namespace CsharpEvolution.Tests01.SimpleCalculator.Entities;
 
 public class PerformedOperation
 {
+    public PerformedOperation()
+    {
+    }
+
     public PerformedOperation(string mathOperation, decimal numOne, decimal? numTwo, decimal result)
     {
         MathOperation = mathOperation;
@@ -9,7 +15,7 @@ public class PerformedOperation
         NumTwo = numTwo;
         Result = result;
     }
-    
+    public int Id { get; set; }
     public string MathOperation { get; set; }
     public decimal NumOne { get; set; }
     public decimal? NumTwo { get; set; }
