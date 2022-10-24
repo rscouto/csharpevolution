@@ -35,11 +35,11 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         public void Calculate()
         {
 
-            var isValid = CollectOperationInfo(out var number1, out var number2, out var mathOperation);
+            var (isValid, operation) = CollectOperationInfo(out var number1, out var number2, out var mathOperation);
 
             if (isValid)
             {
-                var result = MathOperationFactory.Calculate(mathOperation, _operationType, number1, number2);
+                var result = MathOperationFactory.Calculate(operation, _operationType, number1, number2);
 
                 var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
 
@@ -85,7 +85,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         }
 
-        private bool CollectOperationInfo(out decimal number1, out decimal number2, out string mathOperation)
+        private (bool, string) CollectOperationInfo(out decimal number1, out decimal number2, out string mathOperation)
         {
             Console.WriteLine("Digite o primeiro número para a operação:");
             number1 = NumberValidator(Console.ReadLine());
@@ -126,7 +126,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         //}
 
-        private bool OperationValidator(string mathOperation)
+        private (bool, string) OperationValidator(string mathOperation)
         {
             bool isValidOperation = _mathOperations.Contains(mathOperation.ToUpper());
 
@@ -138,9 +138,9 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 var input = Console.ReadLine().ToUpper();
                 if (input.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
                 isValidOperation = _mathOperations.Contains(input.ToUpper());   
+                mathOperation = input.ToUpper();
             }
-
-            return isValidOperation;
+            return (isValidOperation, mathOperation);
         }
 
         private decimal NumberValidator(string userInput)

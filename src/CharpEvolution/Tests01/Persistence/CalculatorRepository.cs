@@ -22,7 +22,7 @@ public class CalculatorRepository : ICalculatorRepository
     //    var client = new MongoClient(settings.ConnectionString);
     //    var database = client.GetDatabase(settings.DataBaseName);
 
-    //    _collection = database.GetCollection<PerformedOperation>(settings.RpgStoreItemInventoryCollectionName);
+    //    _collection = database.GetCollection<PerformedOperation>(settings.CalculatorCollectionName);
     //}
 
     public void Create(PerformedOperation operation)

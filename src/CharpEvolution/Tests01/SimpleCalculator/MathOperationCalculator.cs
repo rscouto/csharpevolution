@@ -2,7 +2,7 @@
 
 namespace CsharpEvolution.Tests01.SimpleCalculator;
 
-public class MathOperationCalculator
+public class MathOperationCalculator 
 {
     private readonly IOperation _mathOperation;
     public MathOperationCalculator(string operation, IOperation mathOperation)

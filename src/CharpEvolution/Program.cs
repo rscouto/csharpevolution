@@ -1,5 +1,6 @@
 ﻿using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator;
+using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
