@@ -23,7 +23,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private readonly IOperation _operationType;
         private readonly IOperationCache _cache;
         private readonly ICalculatorRepository _repository;
-        private List<PerformedOperation> listOfOperations = new List<PerformedOperation>();
         private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
