@@ -43,6 +43,31 @@ public class CalculatorRepository : ICalculatorRepository
         }
 
     }
+
+    public List<PerformedOperation> Get()
+    {
+        List<PerformedOperation> operations = new();   
+
+        try
+        {
+            SqlConnection connection = new(connectionString);
+            connection.Open();
+            var query = "SELECT (id, MathOperation, NumOne, NumTwo, Result) FROM MEMORIADECALCULO " +
+                "ORDER BY id DESC)";
+            //var query = "SELECT * FROM MEMORIADECALCULO " +
+                //"ORDER BY id DESC)";
+
+            SqlCommand sqlCommand = new(query, connection);
+            sqlCommand.ExecuteNonQuery();
+            return operations;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        return operations;
+
+    }
     //public PerformedOperation Create(PerformedOperation operation)
     //{
     //    _collection.InsertOne(operation);
