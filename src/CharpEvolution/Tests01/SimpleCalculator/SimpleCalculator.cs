@@ -21,9 +21,8 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         long itemCount = 0;
         private readonly IOperation _operationType;
         private readonly IOperationCache _cache;
-        private const string operationKey = "operation";
         private List<PerformedOperation> listOfOperations = new List<PerformedOperation>();
-        private readonly IEnumerable<string> _mathOperations = new string[] { "SOMA", "SUBTRAÇÃO",
+        private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
         public SimpleCalculator(IOperationCache cache)
@@ -54,31 +53,23 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 if (input == "S") { Calculate(); }
                 EscapeApplication();
             }
-
-            //remover daqui pra baixo
-            //Console.WriteLine(_cache.TryGetValue(operationKey, out performedOperation));
-            //var list = new List<PerformedOperation>() { performedOperation };
-            //Console.WriteLine(list.Count);
-
         }
 
         private void StoreInCache(PerformedOperation performedOperation)
         {
-            listOfOperations.Add(performedOperation);
-            _cache.AddToCache(listOfOperations);
+            _cache.AddToCache(performedOperation);
             cacheCount++;
 
-            if (listOfOperations.Count % 2 == 0)
+            if (cacheCount % 2 == 0)
             {
                 WriteCache();
-                //_cache.Dispose();
             }
         }
 
         private void WriteCache()
         {
             var inCacheOperations = _cache.GetOperations();
-                        
+
             StringBuilder stringWithAllOperations = new StringBuilder();
 
             foreach (var operation in inCacheOperations)
@@ -87,8 +78,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 stringWithAllOperations.Append($"{itemCount}       {operation.MathOperation}             " +
                     $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}\n");
             }
-
-            stringWithAllOperations.AppendJoin("", stringWithAllOperations.ToString());
 
             File.WriteAllText("MathOperations.txt", stringWithAllOperations.ToString().Trim());
 
@@ -110,32 +99,51 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             return OperationValidator(mathOperation);
         }
 
+        //private bool OperationValidator(string mathOperation)
+        //{
+        //    //TODO remover recursividade como no NumberValidator 
+        //    bool isValidOperation = false;
+
+        //    foreach (string operation in _mathOperations)
+        //    {
+        //        if (mathOperation.Equals(operation, StringComparison.CurrentCultureIgnoreCase))
+        //        {
+        //            return true;
+        //        }
+
+        //        Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
+        //            "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
+
+        //        mathOperation = Console.ReadLine();
+
+        //        if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
+        //        else { OperationValidator(mathOperation); }
+        //    }
+        //    return isValidOperation; 
+
+
+        //}
+
         private bool OperationValidator(string mathOperation)
         {
-            //TODO remover recursividade como no NumberValidator 
-            bool isValidOperation = false;
+            bool isValidOperation = _mathOperations.Contains(mathOperation.ToUpper());
 
-            foreach (string operation in _mathOperations)
+
+            while (!isValidOperation)
             {
-                if (mathOperation.Equals(operation, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    return true;
-                }
-
                 Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
-                    "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
-
-                mathOperation = Console.ReadLine();
-
-                if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
-                else { OperationValidator(mathOperation); }
+                "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
+                var input = Console.ReadLine().ToUpper();
+                if (input.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
+                isValidOperation = _mathOperations.Contains(input.ToUpper());   
             }
-            return false; ;
+
+            return isValidOperation;
         }
 
         private decimal NumberValidator(string userInput)
         {
-            decimal number; 
+            decimal number;
 
             while (!decimal.TryParse(userInput, out number))
             {
@@ -148,7 +156,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
                 {
                     EscapeApplication();
                 }
-                
+
             }
 
             return number;
