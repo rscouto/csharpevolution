@@ -44,7 +44,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
                 var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
 
-                _repository.Create(performedOperation); 
+                //_repository.Create(performedOperation); 
                 StoreInCache(performedOperation);
 
                 Console.WriteLine($"O resultado da sua operação é: {result}");
