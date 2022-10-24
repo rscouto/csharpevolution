@@ -1,4 +1,5 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+﻿using CsharpEvolution.Tests01.Persistence;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
@@ -21,13 +22,15 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         long itemCount = 0;
         private readonly IOperation _operationType;
         private readonly IOperationCache _cache;
+        private readonly ICalculatorRepository _repository;
         private List<PerformedOperation> listOfOperations = new List<PerformedOperation>();
         private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
-        public SimpleCalculator(IOperationCache cache)
+        public SimpleCalculator(IOperationCache cache, ICalculatorRepository repository)
         {
             _cache = cache;
+            _repository = repository;
         }
 
         public void Calculate()
@@ -41,7 +44,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
                 var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
 
-
+                _repository.Create(performedOperation); 
                 StoreInCache(performedOperation);
 
                 Console.WriteLine($"O resultado da sua operação é: {result}");

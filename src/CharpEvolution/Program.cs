@@ -1,7 +1,9 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator;
+﻿using CsharpEvolution.Tests01.Persistence;
+using CsharpEvolution.Tests01.SimpleCalculator;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 
 
@@ -9,7 +11,7 @@ namespace CharpEvolution
 {
     class Program
     {
-        private readonly ISimpleCalculator _calculator;  
+        private readonly ISimpleCalculator _calculator;
 
         public Program(ISimpleCalculator calculator)
         {
@@ -24,6 +26,7 @@ namespace CharpEvolution
 
         private void Run()
         {
+
             _calculator.Calculate();
 
             Console.ReadKey();
@@ -36,9 +39,13 @@ namespace CharpEvolution
                 .ConfigureServices((services =>
                 {
                     services.AddScoped<Program>();
+                    services.AddScoped<ICalculatorRepository, CalculatorRepository>();
                     services.AddScoped<IOperationCache, OperationCache>();
                     services.AddScoped<ISimpleCalculator, SimpleCalculator>();
                     services.AddMemoryCache();
+
+                    services.AddSingleton<ICalculatorRepositorySettings>(sp =>
+            sp.GetRequiredService<IOptions<CalculatorRepositorySettings>>().Value);
                 }));
         }
     }
