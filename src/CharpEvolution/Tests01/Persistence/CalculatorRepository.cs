@@ -52,25 +52,23 @@ public class CalculatorRepository : ICalculatorRepository
         SqlConnection connection = new(connectionString);
         try
         {
-            //Cria uma objeto do tipo comando passando como parametro a string sql e a string de conexão
             SqlCommand command = new SqlCommand(sql, connection);
-            //Adicionando o valor das textBox nos parametros do comando
+            
             command.Parameters.Add(new SqlParameter("@MathOperation", operation.MathOperation));
             command.Parameters.Add(new SqlParameter("@NumOne", operation.NumOne));
             command.Parameters.Add(new SqlParameter("@NumTwo", operation.NumTwo));
             command.Parameters.Add(new SqlParameter("@Result", operation.Result));
             command.Parameters.Add("@_id", SqlDbType.Int).Direction = ParameterDirection.Output;
-            //abre a conexao
+            
             connection.Open();
-            //executa o comando com os parametros que foram adicionados acima
+            
             command.ExecuteNonQuery();
 
             int id = (int)command.Parameters["@_id"].Value;
 
 
-            //fecha a conexao
             connection.Close();
-            //Minha função para limpar os textBox
+            
             return id;
         }
 
