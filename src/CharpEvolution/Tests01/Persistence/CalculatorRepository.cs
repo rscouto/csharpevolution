@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace CsharpEvolution.Tests01.Persistence;
 
 public interface ICalculatorRepository
 {
-    void Create(PerformedOperation operation);
+    int Create(PerformedOperation operation);
 }
 
 public class CalculatorRepository : ICalculatorRepository
@@ -25,7 +26,7 @@ public class CalculatorRepository : ICalculatorRepository
     //    _collection = database.GetCollection<PerformedOperation>(settings.CalculatorCollectionName);
     //}
 
-    public void Create(PerformedOperation operation)
+    public void Create2(PerformedOperation operation)
     {
         try
         {
@@ -44,9 +45,43 @@ public class CalculatorRepository : ICalculatorRepository
 
     }
 
+    public int Create(PerformedOperation operation)
+    {
+        string sql = "INSERT INTO MEMORIADECALCULO(MathOperation, NumOne, NumTwo, Result) VALUES(@MathOperation, @NumOne, @NumTwo, @Result);" + 
+                     "SELECT @_id = SCOPE_IDENTITY()";
+        SqlConnection connection = new(connectionString);
+        try
+        {
+            //Cria uma objeto do tipo comando passando como parametro a string sql e a string de conexão
+            SqlCommand command = new SqlCommand(sql, connection);
+            //Adicionando o valor das textBox nos parametros do comando
+            command.Parameters.Add(new SqlParameter("@MathOperation", operation.MathOperation));
+            command.Parameters.Add(new SqlParameter("@NumOne", operation.NumOne));
+            command.Parameters.Add(new SqlParameter("@NumTwo", operation.NumTwo));
+            command.Parameters.Add(new SqlParameter("@Result", operation.Result));
+            command.Parameters.Add("@_id", SqlDbType.Int).Direction = ParameterDirection.Output;
+            //abre a conexao
+            connection.Open();
+            //executa o comando com os parametros que foram adicionados acima
+            command.ExecuteNonQuery();
+
+            int id = (int)command.Parameters["@_id"].Value;
+
+
+            //fecha a conexao
+            connection.Close();
+            //Minha função para limpar os textBox
+            return id;
+        }
+
+        finally
+        {
+            connection.Close();
+        }
+    }
     public List<PerformedOperation> Get()
     {
-        List<PerformedOperation> operations = new();   
+        List<PerformedOperation> operations = new();
 
         try
         {
@@ -55,7 +90,7 @@ public class CalculatorRepository : ICalculatorRepository
             var query = "SELECT (id, MathOperation, NumOne, NumTwo, Result) FROM MEMORIADECALCULO " +
                 "ORDER BY id DESC)";
             //var query = "SELECT * FROM MEMORIADECALCULO " +
-                //"ORDER BY id DESC)";
+            //"ORDER BY id DESC)";
 
             SqlCommand sqlCommand = new(query, connection);
             sqlCommand.ExecuteNonQuery();
@@ -86,3 +121,9 @@ public class CalculatorRepository : ICalculatorRepository
     //}
 
 }
+
+
+
+
+
+
