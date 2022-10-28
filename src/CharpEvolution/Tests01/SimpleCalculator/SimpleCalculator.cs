@@ -1,11 +1,10 @@
 ﻿using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
-using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace CsharpEvolution.Tests01.SimpleCalculator
@@ -20,41 +19,40 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private readonly string _quit = "Q";
         private long cacheCount = 0;
         long itemCount = 0;
-        private readonly IOperation _operationType;
+        private readonly IMathOperationFactory _operationFactory;
         private readonly IOperationCache _cache;
         private readonly ICalculatorRepository _repository;
         private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
-        public SimpleCalculator(IOperationCache cache, ICalculatorRepository repository)
+        public SimpleCalculator(IOperationCache cache, ICalculatorRepository repository, IMathOperationFactory operationFactory)
         {
             _cache = cache;
             _repository = repository;
+            _operationFactory = operationFactory;
         }
 
         public void Calculate()
         {
 
-            var (isValid, operation) = CollectOperationInfo(out var number1, out var number2, out var mathOperation);
+            var foo = CollectOperationInfo();
 
-            if (isValid)
-            {
-                var result = MathOperationFactory.Calculate(operation, _operationType, number1, number2);
+            var result = _operationFactory.Calculate(foo.mathOperation, foo.number1, foo.number2);
 
-                var performedOperation = new PerformedOperation(mathOperation, number1, number2, result);
+            var performedOperation = new PerformedOperation(foo.mathOperation, foo.number1, foo.number2, result);
 
-                //_repository.Create(performedOperation); 
-                StoreInCache(performedOperation);
+            //_repository.Create(performedOperation); 
+            StoreInCache(performedOperation);
 
-                Console.WriteLine($"O resultado da sua operação é: {result}");
-                Console.WriteLine("Deseja efetuar mais alguma operação? S/N");
-                var input = Console.ReadLine().ToUpper();
+            Console.WriteLine($"O resultado da sua operação é: {result}");
+            Console.WriteLine("Deseja efetuar mais alguma operação? S/N");
+            var input = Console.ReadLine().ToUpper();
 
-                Console.Clear();
+            Console.Clear();
 
-                if (input == "S") { Calculate(); }
-                EscapeApplication();
-            }
+            if (input == "S") { Calculate(); }
+            EscapeApplication();
+
         }
 
         private void StoreInCache(PerformedOperation performedOperation)
@@ -85,62 +83,35 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         }
 
-        private (bool, string) CollectOperationInfo(out decimal number1, out decimal number2, out string mathOperation)
+        private (decimal number1, decimal number2, string mathOperation) CollectOperationInfo()
         {
             Console.WriteLine("Digite o primeiro número para a operação:");
-            number1 = NumberValidator(Console.ReadLine());
+            var number1 = NumberValidator(Console.ReadLine());
 
             Console.WriteLine("Digite o segundo número para a operação:");
-            number2 = NumberValidator(Console.ReadLine());
+            var number2 = NumberValidator(Console.ReadLine());
 
             Console.WriteLine("Digite uma das operações matemáticas a seguir:" +
                 "\n* Soma \n* Subtração \n* Multiplicação \n* Divisão");
 
-            mathOperation = Console.ReadLine().ToUpper();
+            var mathOperation = OperationValidator(Console.ReadLine());
 
-            return OperationValidator(mathOperation);
+            return (number1, number2, mathOperation);
         }
 
-        //private bool OperationValidator(string mathOperation)
-        //{
-        //    //TODO remover recursividade como no NumberValidator 
-        //    bool isValidOperation = false;
-
-        //    foreach (string operation in _mathOperations)
-        //    {
-        //        if (mathOperation.Equals(operation, StringComparison.CurrentCultureIgnoreCase))
-        //        {
-        //            return true;
-        //        }
-
-        //        Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
-        //            "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
-
-        //        mathOperation = Console.ReadLine();
-
-        //        if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
-        //        else { OperationValidator(mathOperation); }
-        //    }
-        //    return isValidOperation; 
-
-
-        //}
-
-        private (bool, string) OperationValidator(string mathOperation)
+        private string OperationValidator(string mathOperation)
         {
-            bool isValidOperation = _mathOperations.Contains(mathOperation.ToUpper());
-
+            bool isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
 
             while (!isValidOperation)
             {
                 Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
                 "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
-                var input = Console.ReadLine().ToUpper();
-                if (input.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
-                isValidOperation = _mathOperations.Contains(input.ToUpper());   
-                mathOperation = input.ToUpper();
+                mathOperation = Console.ReadLine();
+                if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
+                isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
             }
-            return (isValidOperation, mathOperation);
+            return mathOperation;
         }
 
         private decimal NumberValidator(string userInput)

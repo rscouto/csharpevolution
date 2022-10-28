@@ -1,31 +1,30 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
+﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace CsharpEvolution.Tests01.SimpleCalculator.Factory;
 
-public class MathOperationFactory
+public interface IMathOperationFactory
 {
-    public static decimal Calculate(string mathOperation, IOperation _operationType, decimal number1, decimal number2)
+    decimal Calculate(string mathOperation, decimal number1, decimal number2);
+}
+
+public class MathOperationFactory : IMathOperationFactory
+{
+    private readonly IReadOnlyDictionary<OperationType, IOperation> _operations;
+
+    public MathOperationFactory(IReadOnlyDictionary<OperationType, IOperation> operations)
     {
-        switch (mathOperation)
-        {
-            case "SOMA":
-                _operationType = new AdditionOperation();
-                break;
+        _operations = operations;  
+    }
+    public decimal Calculate(string mathOperation, decimal number1, decimal number2)
+    {
+        Enum.TryParse(mathOperation.ToUpper(), out OperationType operationType);
 
-            case "SUBTRAÇÃO":
-                _operationType = new SubtractionOperation();
-                break;
-
-            case "MULTIPLICAÇÃO":
-                _operationType = new MultiplicationOperation();
-                break;
-
-            case "DIVISÃO":
-                _operationType = new DivisionOperation();
-                break;
-        }
-        MathOperationCalculator mathOperationFactory = new MathOperationCalculator(mathOperation, _operationType);
-        return mathOperationFactory.Calculate(mathOperation, number1, number2);
+        if (!_operations.TryGetValue(operationType, out var handler))
+            throw new ArgumentException("Operação não reconhecida");
+        return handler.Calculate(number1, number2);
+        
     }
 }

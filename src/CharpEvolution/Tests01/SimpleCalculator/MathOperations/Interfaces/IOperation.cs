@@ -2,5 +2,5 @@
 
 public interface IOperation
 {
-    public decimal Calculate(decimal numOne, decimal optionalNumTwo = 0);
+    public decimal Calculate(decimal numOne, decimal numTwo);
 }
