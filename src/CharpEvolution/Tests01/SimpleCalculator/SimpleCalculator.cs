@@ -42,6 +42,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             var performedOperation = new PerformedOperation(foo.mathOperation, foo.number1, foo.number2, result);
 
             var persistedId = _repository.Create(performedOperation);
+            var something = _repository.Get2();
             performedOperation.Id = persistedId;    
             StoreInCache(performedOperation);
 
@@ -59,9 +60,8 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private void StoreInCache(PerformedOperation performedOperation)
         {
             _cache.AddToCache(performedOperation);
-            cacheCount++;
 
-            if (cacheCount % 2 == 0)
+            if (_cache.GetOperations().Count() % 2 == 0)
             {
                 WriteCache();
             }
@@ -75,7 +75,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             foreach (var operation in inCacheOperations)
             {
-                itemCount++;
                 stringWithAllOperations.Append($"{operation.Id}       {operation.MathOperation}             " +
                     $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}\n");
             }
