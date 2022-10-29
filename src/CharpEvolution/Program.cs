@@ -4,7 +4,6 @@ using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;

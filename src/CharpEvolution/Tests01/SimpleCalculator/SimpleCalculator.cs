@@ -17,8 +17,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
     public class SimpleCalculator : ISimpleCalculator
     {
         private readonly string _quit = "Q";
-        private long cacheCount = 0;
-        long itemCount = 0;
         private readonly IMathOperationFactory _operationFactory;
         private readonly IOperationCache _cache;
         private readonly ICalculatorRepository _repository;
