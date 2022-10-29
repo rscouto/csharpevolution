@@ -720,7 +720,146 @@ public class Example
 
     ----------------------------
 
-    *Entity Framework
+    *Entity Framework Core
+
+    Entity Framework Core
+
+O Entity Framework Core (EF Core) é uma versão leve, extensível e multiplataforma do Entity Framework. O EF Core 
+introduz muitas melhorias e novos recursos quando comparado com o EF6.x. Ao mesmo tempo, o EF Core é uma nova base 
+de código e um novo produto.
+
+O EF Core mantém a experiência do desenvolvedor do EF6.x e a maioria das APIs de alto nível permanece a mesma, 
+portanto, o EF Core vai parecer muito familiar para quem já usou o EF6.x. Ao mesmo tempo, o EF Core é construído 
+sobre um conjunto completamente novo de componentes principais.
+
+Isso significa que o EF Core não herda automaticamente todos os recursos do EF6.x. Alguns desses recursos aparecerão 
+em lançamentos futuros (como o lazy loading e a resiliência da conexão), outros recursos menos usados ​​não serão 
+implementados no EF Core.
+
+O novo núcleo , extensível e leve também permitiu adicionar alguns recursos ao EF Core que não serão implementados 
+no EF6.x (como chaves alternativas e avaliação mista de cliente/banco de dados em consultas LINQ).
+
+Nota1:  Usar as duas versões em uma mesma aplicação é possível pois elas possuem os mesmos tipos diferindo apenas 
+no namespaces e isso pode tornar a manutenção do seu código muito complexa.
+
+Nota2:  Devido a mudanças estruturais feitas no EF Core não é recomendado mover uma aplicação que usa o EF 6.x 
+para o EF Core a não se que isso se caso de 'vida ou morte'.
+
+Com isso em mente vamos iniciar a nossa jornada com o Entity Framework Core de agora em diante EF Core.
+
+Entity Framework Core
+
+O EF Core é um mapeador objeto-relacional (O/RM) que permite aos desenvolvedores .NET trabalhar com um banco 
+de dados usando objetos .NET. Ele elimina a necessidade da maior parte do código de acesso a dados que os 
+desenvolvedores normalmente precisam escrever. O EF Core suporta muitos mecanismos de banco de dados.
+
+O EF Core é uma versão totalmente nova baseada no EF 6.x :
+
+Ele foi reescrito a partir do zero;
+
+É multiplataforma (Windows, Mac e Linux);
+
+É Modular e suporta diversos provedores: SQL Server, MySQL, PostgreSQL, Oracle, SQLite, SQLCompact, DB2, InMemory, 
+Azure Table Storage, etc;
+
+É open source e esta disponível no GitHub;
+
+Pode ser usado em aplicações Windows Forms, WPF, Console, ASP .NET, ASP .NET Core, WUP, Xamarin (em breve), etc;
+
+Suporta as abordagens :  Code First, Database First,  Shadow Properties, Alternate Keys, etc;
+
+Suporta a ferramenta de linha de comando : NET Core CLI
+
+Pode ser instalado via Nuget : Install-Package Microsoft.EntityFrameworkCore.SqlServer
+
+O modelo
+
+Com o EF Core, o acesso a dados é executado usando um modelo. Um modelo é composto de classes de entidade 
+e um contexto derivado que representa uma sessão com o banco de dados, permitindo que você pesquise e salve dados.
+
+Podemos criar um modelo usando as seguintes abordagens:
+
+1 - Você pode gerar um modelo a partir de um banco de dados existente;
+2 - Codificar manualmente um modelo para corresponder ao seu banco de dados;
+3 - Usar o EF Migrations para criar um banco de dados a partir do seu modelo (e depois evoluí-lo conforme 
+seu modelo muda ao longo do tempo).
+
+Exemplo de um modelo
+
+Como exemplo de um modelo vamos criar as seguintes classes usando a linguagem C# :
+
+classe Blog - representa um blog;
+
+classe Post - representa os posts de um blog ;
+
+classe BlogContext - representa uma sessão com o banco de dados;
+
+Abaixo vemos as 3 classes criadas :
+
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+namespace Intro
+{
+    public class BlogContext : DbContext
+    {
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Nome_BancoDados;
+            Trusted_Connection=True;");
+        }
+    }
+    public class Blog
+    {
+        public int BlogId { get; set; }
+        public string Url { get; set; }
+        public int Avaliacao { get; set; }
+        public List<Post> Posts { get; set; }
+    }
+    public class Post
+    {
+        public int PostId { get; set; }
+        public string Titulo { get; set; }
+        public string Conteudo { get; set; }
+        public int BlogId { get; set; }
+        public Blog Blog { get; set; }
+    }
+}
+O que vale a pena destacar :
+
+1- A referência ao namespace : Microsoft.EntityFrameworkCore;
+
+2- A classe de contexto, BlogContext, herda da classe DbContext ;
+
+3- A definição da string de conexão com o banco de dados SQL Server Localdb;
+
+4- Estamos usando apenas classes POCO (Plain Old CLR Objects);
+
+Acessando e consultando o Modelo
+
+Podemos acessar e consultar o modelo criado usando as instâncias das classes de entidades que são recuperadas do 
+banco de dados usando a linguagem LINQ.
+
+Exemplo de código usando LINQ para acessar todos os blogs com avaliação maior que 3 e ordenados pela Url :
+
+using (var db = new BlogContext())
+{
+    var blogs = db.Blogs
+                      .Where(b => b.Avaliacao > 3)
+                      .OrderBy(b => b.Url)
+                      .ToList();
+}
+Podemos também criar, deletar e modificar dados do banco de dados usando instâncias das entidades de classes criadas.
+
+No exemplo a seguir criamos um novo blog e adicionamos á tabela Blogs do banco de dados usando o método SaveChanges:
+
+using (var db = new BlogContext())
+{
+    var blog = new Blog { Url = "http://macoratti.net" };
+    db.Blogs.Add(blog);
+    db.SaveChanges();
+}
 
 
 
