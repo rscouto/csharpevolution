@@ -11,7 +11,7 @@ namespace CsharpEvolution.Tests01.Persistence
     public class PerformedOperationContext : DbContext
     {
         public DbSet<PerformedOperation> Operations { get; set; }
-        string connectionString = @"Data Source=BRRIOWN041122\SQLEXPRESS2;Initial Catalog=CalculatorApp;Integrated Security=True"
+        string connectionString = @"Data Source=BRRIOWN041122\SQLEXPRESS2;Initial Catalog=CalculatorApp;Integrated Security=True";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString);
