@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace CsharpEvolution.Tests01.Persistence
 {
@@ -15,13 +15,11 @@ namespace CsharpEvolution.Tests01.Persistence
             optionsBuilder.UseSqlServer(connectionString);
         }
 
-        public void Create(PerformedOperation operation)
+        public int CreateV2(PerformedOperation operation)
         {
             using (var db = new PerformedOperationContext())
             {
                 // Create and save
-
-
                 var performedOperation = new PerformedOperation
                 {
                     MathOperation = operation.MathOperation,
@@ -32,22 +30,26 @@ namespace CsharpEvolution.Tests01.Persistence
 
                 db.Operations.Add(performedOperation);
                 db.SaveChanges();
+
+                return performedOperation.Id;
             }
         }
 
-        public void Find(string operation = null)
+        public void FindV2(string operation = null)
         {
             using (var db = new PerformedOperationContext())
             {
                 // Display all 
                 var query = from op in db.Operations
-                            orderby op.Id
+                            orderby op.Id descending
                             select op;
 
-                Console.WriteLine("All blogs in the database:");
-                foreach (var item in query)
+                StringBuilder stringWithAllOperations = new StringBuilder();
+
+                foreach (var op in query)
                 {
-                    Console.WriteLine(item.Id);
+                    Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
+                        $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
                 }
 
                 Console.WriteLine("Press any key to exit...");

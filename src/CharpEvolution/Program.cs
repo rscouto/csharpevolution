@@ -51,6 +51,7 @@ namespace CharpEvolution
                     services.AddScoped<SubtractionOperation>();
                     services.AddScoped<MultiplicationOperation>();
                     services.AddScoped<DivisionOperation>();
+                    services.AddScoped<PerformedOperationContext>();
 
                     services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
                     {

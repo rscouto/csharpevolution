@@ -89,7 +89,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             var number2 = NumberValidator(Console.ReadLine());
 
             Console.WriteLine("Digite uma das operações matemáticas a seguir:" +
-                "\n* Soma \n* Subtração \n* Multiplicação \n* Divisão");
+                "\n* Soma \n* Subtração \n* Multiplicação \n* Divisão\n");
 
             var mathOperation = OperationValidator(Console.ReadLine());
 
