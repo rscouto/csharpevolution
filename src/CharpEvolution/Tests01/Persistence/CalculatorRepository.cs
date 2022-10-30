@@ -44,6 +44,7 @@ public class CalculatorRepository : ICalculatorRepository
             TimeSpan timeTaken = timer.Elapsed;
             string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
             Console.WriteLine(elapsed); 
+
             return performedOperation.Id;
         }
     }
