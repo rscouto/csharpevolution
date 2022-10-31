@@ -76,13 +76,16 @@ public class CalculatorRepository : ICalculatorRepository
 
         }
     }
+
+    //TODO aumentar precisão dos decimais no banco
     public int Create(PerformedOperation operation)
     {
         var timer = new Stopwatch();
         timer.Start();
 
-        string sql = "INSERT INTO MEMORIADECALCULO(MathOperation, NumOne, NumTwo, Result) VALUES(@MathOperation, @NumOne, @NumTwo, @Result);" +
-                     "SELECT @_id = SCOPE_IDENTITY()";
+        string sql = @"INSERT INTO MEMORIADECALCULO(MathOperation, NumOne, NumTwo, Result) 
+                       VALUES(@MathOperation, @NumOne, @NumTwo, @Result);" +
+                      "SELECT @_id = SCOPE_IDENTITY()";
         SqlConnection connection = new(connectionString);
         try
         {
@@ -119,30 +122,19 @@ public class CalculatorRepository : ICalculatorRepository
     public IEnumerable<PerformedOperation> Find()
     {
         List<PerformedOperation> operations = new();
-        PerformedOperation operation = new();
         var timer = new Stopwatch();
 
         timer.Start();
 
-        var sql = "SELECT m.@_id = SCOPE_IDENTITY(), m.MathOperation, m.NumOne, m.NumTwo, m.Result FROM MEMORIADECALCULO m ORDER BY _id DESC;";
+        var sql = @"SELECT m._id, m.MathOperation, m.NumOne, m.NumTwo, m.Result 
+                    FROM MEMORIADECALCULO m 
+                    ORDER BY _id DESC;";
+
         SqlConnection connection = new(connectionString);
 
         try
         {
             SqlCommand command = new SqlCommand(sql, connection);
-
-
-
-            //command.Parameters.Add("{_id}");//isso aqui tá dando erro
-            command.Parameters.Add("@MathOperation");
-            command.Parameters.Add("@NumOne");
-            command.Parameters.Add("@NumTwo");
-            command.Parameters.Add("@Result");
-            command.Parameters.Add("@_id", SqlDbType.Int).Direction = ParameterDirection.Output;
-            //command.Parameters.Add("@MathOperation", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
-            //command.Parameters.Add("@NumOne", SqlDbType.Decimal).Direction = ParameterDirection.Output;
-            //command.Parameters.Add("@NumTwo", SqlDbType.Decimal).Direction = ParameterDirection.Output;
-            //command.Parameters.Add("@Result", SqlDbType.Decimal).Direction = ParameterDirection.Output;
 
             connection.Open();
 
@@ -152,11 +144,13 @@ public class CalculatorRepository : ICalculatorRepository
             {
                 while (reader.Read())
                 {
-                    operation.Id = (int)command.Parameters["@_id"].Value;
-                    operation.MathOperation = (string)command.Parameters["@MathOperation"].Value;
-                    operation.NumOne = (decimal)command.Parameters["@NumOne"].Value;
-                    operation.NumTwo = (decimal)command.Parameters["@NumTwo"].Value;
-                    operation.Result = (decimal)command.Parameters["@Result"].Value;
+                    var operation = new PerformedOperation();
+
+                    operation.Id = reader.GetInt32("_id");
+                    operation.MathOperation = reader.GetString("MathOperation");
+                    operation.NumOne = reader.GetDecimal("NumOne");
+                    operation.NumTwo = reader.GetDecimal("NumTwo");
+                    operation.Result = reader.GetDecimal("Result");
                     operations.Add(operation);
                 }
 

@@ -39,8 +39,13 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             var performedOperation = new PerformedOperation(foo.mathOperation, foo.number1, foo.number2, result);
 
-            var persistedId = _repository.CreateV2(performedOperation);//_repository.Create(performedOperation);
-            performedOperation.Id = persistedId;    
+            //var persistedId = _repository.Create(performedOperation);
+            var persistedId = _repository.CreateV2(performedOperation);
+            performedOperation.Id = persistedId;
+
+            //var operations = _repository.Find();
+
+           
             StoreInCache(performedOperation);
 
             Console.WriteLine($"O resultado da sua operação é: {result}");

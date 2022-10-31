@@ -16,9 +16,11 @@ namespace CsharpEvolution.Tests01.Persistence
         public DbSet<PerformedOperation> Operations { get; set; }
 
         string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString);
         }
+
     }
 }

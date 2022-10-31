@@ -17,6 +17,7 @@ public class PerformedOperation
         NumTwo = numTwo;
         Result = result;
     }
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }

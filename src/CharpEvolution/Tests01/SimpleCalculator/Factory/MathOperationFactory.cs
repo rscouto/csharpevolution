@@ -20,7 +20,7 @@ public class MathOperationFactory : IMathOperationFactory
     }
     public decimal Calculate(string mathOperation, decimal number1, decimal number2)
     {
-        Enum.TryParse(mathOperation.ToUpper(), out OperationType operationType);
+        Enum.TryParse(mathOperation, true, out OperationType operationType);
 
         if (!_operations.TryGetValue(operationType, out var handler))
             throw new ArgumentException("Operação não reconhecida");
