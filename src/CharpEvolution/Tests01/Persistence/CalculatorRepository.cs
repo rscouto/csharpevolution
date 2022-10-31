@@ -71,7 +71,6 @@ public class CalculatorRepository : ICalculatorRepository
             string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
             Console.WriteLine(elapsed);
 
-            Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
 
         }
@@ -118,7 +117,6 @@ public class CalculatorRepository : ICalculatorRepository
             connection.Close();
         }
     }
-    //TODO Arrumar esse método Find
     public IEnumerable<PerformedOperation> Find()
     {
         List<PerformedOperation> operations = new();
