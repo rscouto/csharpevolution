@@ -8,70 +8,75 @@ using System.Threading.Tasks;
 
 namespace CsharpEvolution.Tests01.Persistence
 {
-    public class DbContextCalculatorRepository : ICalculatorRepository
+    public interface IDbContextCalculatorRepository
+    {
+        int Create(PerformedOperation operation);
+        IEnumerable<PerformedOperation> Find(string operation = null);
+    }
+
+    public class DbContextCalculatorRepository : IDbContextCalculatorRepository
 
     {
+        private readonly PerformedOperationContext _operationContext;
+
+        public DbContextCalculatorRepository(PerformedOperationContext operationContext)
+        {
+            _operationContext = operationContext;
+        }
+
         public int Create(PerformedOperation operation)
         {
-            using (var db = new PerformedOperationContext())
+            var timer = new Stopwatch();
+            timer.Start();
+
+            // Create and save
+            var performedOperation = new PerformedOperation
             {
-                var timer = new Stopwatch();
-                timer.Start();
+                MathOperation = operation.MathOperation,
+                NumOne = operation.NumOne,
+                NumTwo = operation.NumTwo,
+                Result = operation.Result,
+            };
 
-                // Create and save
-                var performedOperation = new PerformedOperation
-                {
-                    MathOperation = operation.MathOperation,
-                    NumOne = operation.NumOne,
-                    NumTwo = operation.NumTwo,
-                    Result = operation.Result,
-                };
+            _operationContext.Operations.Add(performedOperation);
+            _operationContext.SaveChanges();
 
-                db.Operations.Add(performedOperation);
-                db.SaveChanges();
+            timer.Stop();
 
-                timer.Stop();
+            TimeSpan timeTaken = timer.Elapsed;
+            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
+            Console.WriteLine(elapsed);
 
-                TimeSpan timeTaken = timer.Elapsed;
-                string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-                Console.WriteLine(elapsed);
-
-                return performedOperation.Id;
-            }
+            return performedOperation.Id;
         }
 
         public IEnumerable<PerformedOperation> Find(string operation = null)
         {
-            using (var db = new PerformedOperationContext())
+            var timer = new Stopwatch();
+            timer.Start();
+            var operations = new List<PerformedOperation>();
+
+            var query = from op in _operationContext.Operations
+                        orderby op.Id descending
+                        select op;
+
+            foreach (var op in query)
             {
-                // Display all 
-                var timer = new Stopwatch();
-                timer.Start();
-                var operations = new List<PerformedOperation>();
+                Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
+                    $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
+                operations.Add(op);
+            }
 
-                var query = from op in db.Operations
-                            orderby op.Id descending
-                            select op;
-
-                foreach (var op in query)
-                {
-                    Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
-                        $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
-                    operations.Add(op);
-                }
-
-                if(operations.Count > 0)
+            if (operations.Count > 0)
                 return operations;
 
-                return Enumerable.Empty<PerformedOperation>();  
+            return Enumerable.Empty<PerformedOperation>();
 
-                TimeSpan timeTaken = timer.Elapsed;
-                string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-                Console.WriteLine(elapsed);
+            TimeSpan timeTaken = timer.Elapsed;
+            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
+            Console.WriteLine(elapsed);
 
-                Console.ReadKey();
-
-            }
+            Console.ReadKey();
         }
     }
 }

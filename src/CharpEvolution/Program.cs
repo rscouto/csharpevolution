@@ -44,6 +44,7 @@ namespace CharpEvolution
                 {
                     services.AddScoped<Program>();
                     services.AddScoped<ICalculatorRepository, CalculatorRepository>();
+                    services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();    
                     services.AddScoped<IOperationCache, OperationCache>();
                     services.AddScoped<ISimpleCalculator, SimpleCalculator>();
                     services.AddMemoryCache();
@@ -66,8 +67,7 @@ namespace CharpEvolution
                 };
                     });
 
-                    services.AddSingleton<ICalculatorRepositorySettings>(sp =>
-            sp.GetRequiredService<IOptions<CalculatorRepositorySettings>>().Value);
+                    
                 }));
 
 

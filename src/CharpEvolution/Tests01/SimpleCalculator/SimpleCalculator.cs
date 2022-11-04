@@ -20,13 +20,19 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private readonly IMathOperationFactory _operationFactory;
         private readonly IOperationCache _cache;
         private readonly ICalculatorRepository _repository;
+        private readonly IDbContextCalculatorRepository _dbContextCalculatorRepository; 
         private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
-        public SimpleCalculator(IOperationCache cache, ICalculatorRepository repository, IMathOperationFactory operationFactory)
+        public SimpleCalculator(
+            IOperationCache cache,
+            ICalculatorRepository repository,
+            IDbContextCalculatorRepository dbContextCalculatorRepository,
+            IMathOperationFactory operationFactory)
         {
             _cache = cache;
             _repository = repository;
+            _dbContextCalculatorRepository = dbContextCalculatorRepository;
             _operationFactory = operationFactory;
         }
 
@@ -39,11 +45,14 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             var performedOperation = new PerformedOperation(foo.mathOperation, foo.number1, foo.number2, result);
 
             _repository.Create(performedOperation);
-            var persistedId = _repository.CreateV2(performedOperation);
+            _dbContextCalculatorRepository.Create(performedOperation);
+
+            var persistedId = _repository.Create(performedOperation);
             performedOperation.Id = persistedId;
 
             //var operations = _repository.Find();
-            //_repository.FindV2();
+            _dbContextCalculatorRepository.Find();
+            _repository.Find();
 
            
             StoreInCache(performedOperation);

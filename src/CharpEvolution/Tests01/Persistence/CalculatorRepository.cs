@@ -86,14 +86,14 @@ public class CalculatorRepository : ICalculatorRepository
             {
                 while (reader.Read())
                 {
-                    var operation = new PerformedOperation();
+                    var operationPerformed = new PerformedOperation();
 
-                    operation.Id = reader.GetInt32("_id");
-                    operation.MathOperation = reader.GetString("MathOperation");
-                    operation.NumOne = reader.GetDecimal("NumOne");
-                    operation.NumTwo = reader.GetDecimal("NumTwo");
-                    operation.Result = reader.GetDecimal("Result");
-                    operations.Add(operation);
+                    operationPerformed.Id = reader.GetInt32("_id");
+                    operationPerformed.MathOperation = reader.GetString("MathOperation");
+                    operationPerformed.NumOne = reader.GetDecimal("NumOne");
+                    operationPerformed.NumTwo = reader.GetDecimal("NumTwo");
+                    operationPerformed.Result = reader.GetDecimal("Result");
+                    operations.Add(operationPerformed);
                 }
 
                 connection.Close();
