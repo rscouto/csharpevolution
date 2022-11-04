@@ -11,70 +11,14 @@ namespace CsharpEvolution.Tests01.Persistence;
 public interface ICalculatorRepository
 {
     int Create(PerformedOperation operation);
-    int CreateV2(PerformedOperation operation);
-    IEnumerable<PerformedOperation> Find();
-    void FindV2(string operation = null);
+    IEnumerable<PerformedOperation> Find(string operation = null);
 }
 
 public class CalculatorRepository : ICalculatorRepository
 {
     string connectionString = @"Data Source=BRRIOWN041122\SQLEXPRESS2;Initial Catalog=CalculatorApp;Integrated Security=True";
 
-    public int CreateV2(PerformedOperation operation)
-    {
-        using (var db = new PerformedOperationContext())
-        {
-            var timer = new Stopwatch();
-            timer.Start();
-
-            // Create and save
-            var performedOperation = new PerformedOperation
-            {
-                MathOperation = operation.MathOperation,
-                NumOne = operation.NumOne,
-                NumTwo = operation.NumTwo,
-                Result = operation.Result,
-            };
-
-            db.Operations.Add(performedOperation);
-            db.SaveChanges();
-
-            timer.Stop();
-
-            TimeSpan timeTaken = timer.Elapsed;
-            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-            Console.WriteLine(elapsed); 
-
-            return performedOperation.Id;
-        }
-    }
-
-    public void FindV2(string operation = null)
-    {
-        using (var db = new PerformedOperationContext())
-        {
-            // Display all 
-            var timer = new Stopwatch();
-            timer.Start();
-
-            var query = from op in db.Operations
-                        orderby op.Id descending
-                        select op;
-
-            foreach (var op in query)
-            {
-                Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
-                    $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
-            }
-
-            TimeSpan timeTaken = timer.Elapsed;
-            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-            Console.WriteLine(elapsed);
-
-            Console.ReadKey();
-
-        }
-    }
+    
 
     //TODO aumentar precisão dos decimais no banco
     public int Create(PerformedOperation operation)
@@ -117,7 +61,7 @@ public class CalculatorRepository : ICalculatorRepository
             connection.Close();
         }
     }
-    public IEnumerable<PerformedOperation> Find()
+    public IEnumerable<PerformedOperation> Find(string operation = null)
     {
         var operations = new List<PerformedOperation>();
         var timer = new Stopwatch();
