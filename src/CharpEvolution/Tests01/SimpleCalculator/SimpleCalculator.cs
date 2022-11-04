@@ -38,11 +38,12 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             var performedOperation = new PerformedOperation(foo.mathOperation, foo.number1, foo.number2, result);
 
-            //var persistedId = _repository.Create(performedOperation);
+            _repository.Create(performedOperation);
             var persistedId = _repository.CreateV2(performedOperation);
             performedOperation.Id = persistedId;
 
             //var operations = _repository.Find();
+            //_repository.FindV2();
 
            
             StoreInCache(performedOperation);

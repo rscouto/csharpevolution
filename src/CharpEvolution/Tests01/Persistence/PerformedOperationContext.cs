@@ -12,7 +12,7 @@ namespace CsharpEvolution.Tests01.Persistence
         {
 
         }
-        //TODO descobrir pq Operations dá como 'Invalid object name 'Operations''
+
         public DbSet<PerformedOperation> Operations { get; set; }
 
         string connectionString = @"Data Source=BRRIOWN041122\SQLEXPRESS2;Initial Catalog=CalculatorAppDBContext;Integrated Security=True";//@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;";
