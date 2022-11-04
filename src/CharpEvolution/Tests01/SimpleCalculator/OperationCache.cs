@@ -15,7 +15,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
     {
         private const string key = "MyKey";
         private readonly IMemoryCache _cache;
-        List<PerformedOperation> listOfOperations = new ();
+        readonly List<PerformedOperation> listOfOperations = new List<PerformedOperation>();
 
         public OperationCache(IMemoryCache cache)
         {
