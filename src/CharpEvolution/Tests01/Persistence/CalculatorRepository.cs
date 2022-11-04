@@ -18,8 +18,6 @@ public class CalculatorRepository : ICalculatorRepository
 {
     string connectionString = @"Data Source=BRRIOWN041122\SQLEXPRESS2;Initial Catalog=CalculatorApp;Integrated Security=True";
 
-    
-
     //TODO aumentar precisão dos decimais no banco
     public int Create(PerformedOperation operation)
     {
@@ -45,7 +43,6 @@ public class CalculatorRepository : ICalculatorRepository
             command.ExecuteNonQuery();
 
             int id = (int)command.Parameters["@_id"].Value;
-
 
             connection.Close();
 
@@ -112,7 +109,6 @@ public class CalculatorRepository : ICalculatorRepository
         }
 
         return Enumerable.Empty<PerformedOperation>();
-
     }
 }
 

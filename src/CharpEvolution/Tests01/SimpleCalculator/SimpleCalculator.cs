@@ -50,10 +50,8 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             var persistedId = _repository.Create(performedOperation);
             performedOperation.Id = persistedId;
 
-            //var operations = _repository.Find();
             _dbContextCalculatorRepository.Find();
             _repository.Find();
-
            
             StoreInCache(performedOperation);
 
@@ -65,7 +63,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             if (input == "S") { Calculate(); }
             EscapeApplication();
-
         }
 
         private void StoreInCache(PerformedOperation performedOperation)
@@ -91,7 +88,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             }
 
             File.WriteAllText("MathOperations.txt", stringWithAllOperations.ToString().Trim());
-
         }
 
         private (decimal number1, decimal number2, string mathOperation) CollectOperationInfo()
