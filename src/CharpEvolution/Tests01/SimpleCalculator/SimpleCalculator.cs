@@ -38,11 +38,11 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         public void Calculate()
         {
-            var foo = CollectOperationInfo();
+            var userInput = CollectOperationInfo();
 
-            var result = _operationFactory.Calculate(foo.mathOperation, foo.number1, foo.number2);
+            var result = _operationFactory.Calculate(userInput.mathOperation, userInput.number1, userInput.number2);
 
-            var performedOperation = new PerformedOperation(foo.mathOperation, foo.number1, foo.number2, result);
+            var performedOperation = new PerformedOperation(userInput.mathOperation, userInput.number1, userInput.number2, result);
 
             _repository.Create(performedOperation);
             _dbContextCalculatorRepository.Create(performedOperation);
