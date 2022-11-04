@@ -55,6 +55,7 @@ namespace CharpEvolution
                     services.AddScoped<DivisionOperation>();
                     services.AddScoped<PerformedOperationContext>();
                     //services.AddDbContext<PerformedOperationContext>(op => op.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+                    services.AddScoped<IUnitOfWork, UnitOfWork>();
 
                     services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
                     {

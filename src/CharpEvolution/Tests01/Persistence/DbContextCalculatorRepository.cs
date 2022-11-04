@@ -18,10 +18,12 @@ namespace CsharpEvolution.Tests01.Persistence
 
     {
         private readonly PerformedOperationContext _operationContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DbContextCalculatorRepository(PerformedOperationContext operationContext)
+        public DbContextCalculatorRepository(PerformedOperationContext operationContext, IUnitOfWork unitOfWork)
         {
             _operationContext = operationContext;
+            _unitOfWork = unitOfWork;
         }
 
         public int Create(PerformedOperation operation)
@@ -29,54 +31,72 @@ namespace CsharpEvolution.Tests01.Persistence
             var timer = new Stopwatch();
             timer.Start();
 
-            // Create and save
-            var performedOperation = new PerformedOperation
+            try
             {
-                MathOperation = operation.MathOperation,
-                NumOne = operation.NumOne,
-                NumTwo = operation.NumTwo,
-                Result = operation.Result,
-            };
+                var performedOperation = new PerformedOperation
+                {
+                    MathOperation = operation.MathOperation,
+                    NumOne = operation.NumOne,
+                    NumTwo = operation.NumTwo,
+                    Result = operation.Result,
+                };
 
-            _operationContext.Operations.Add(performedOperation);
-            _operationContext.SaveChanges();
+                _operationContext.Operations.Add(performedOperation);
+                _operationContext.SaveChanges();
+                _unitOfWork.Commit();
 
-            timer.Stop();
+                timer.Stop();
 
-            TimeSpan timeTaken = timer.Elapsed;
-            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-            Console.WriteLine(elapsed);
+                TimeSpan timeTaken = timer.Elapsed;
+                string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
+                Console.WriteLine(elapsed);
 
-            return performedOperation.Id;
+                return performedOperation.Id;
+            }
+            catch (Exception)
+            {
+                _unitOfWork.RollBack();
+                return -1;
+            }
+
         }
 
         public IEnumerable<PerformedOperation> Find(string operation = null)
         {
             var timer = new Stopwatch();
             timer.Start();
-            var operations = new List<PerformedOperation>();
 
-            var query = from op in _operationContext.Operations
-                        orderby op.Id descending
-                        select op;
-
-            foreach (var op in query)
+            try
             {
-                Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
-                    $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
-                operations.Add(op);
+                var operations = new List<PerformedOperation>();
+
+                var query = from op in _operationContext.Operations
+                            orderby op.Id descending
+                            select op;
+
+                foreach (var op in query)
+                {
+                    Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
+                        $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
+                    operations.Add(op);
+                }
+
+                if (operations.Count > 0)
+                    return operations;
+
+                return Enumerable.Empty<PerformedOperation>();
+
+                TimeSpan timeTaken = timer.Elapsed;
+                string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
+                Console.WriteLine(elapsed);
+
+                Console.ReadKey();
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
-            if (operations.Count > 0)
-                return operations;
-
-            return Enumerable.Empty<PerformedOperation>();
-
-            TimeSpan timeTaken = timer.Elapsed;
-            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-            Console.WriteLine(elapsed);
-
-            Console.ReadKey();
         }
     }
 }
