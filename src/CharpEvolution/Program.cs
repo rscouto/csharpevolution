@@ -4,10 +4,8 @@ using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 
@@ -30,7 +28,6 @@ namespace CharpEvolution
 
         private void Run()
         {
-
             _calculator.Calculate();
 
             Console.ReadKey();
@@ -43,19 +40,24 @@ namespace CharpEvolution
                 .ConfigureServices((services =>
                 {
                     services.AddScoped<Program>();
-                    services.AddScoped<ICalculatorRepository, CalculatorRepository>();
-                    services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();    
-                    services.AddScoped<IOperationCache, OperationCache>();
+
                     services.AddScoped<ISimpleCalculator, SimpleCalculator>();
+
                     services.AddMemoryCache();
+                    services.AddScoped<IOperationCache, OperationCache>();
+
                     services.AddScoped<IMathOperationFactory, MathOperationFactory>();
+
                     services.AddScoped<AdditionOperation>();
                     services.AddScoped<SubtractionOperation>();
                     services.AddScoped<MultiplicationOperation>();
                     services.AddScoped<DivisionOperation>();
+
                     services.AddScoped<PerformedOperationContext>();
-                    //services.AddDbContext<PerformedOperationContext>(op => op.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+                    services.AddScoped<ICalculatorRepository, CalculatorRepository>();
+                    services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
                     services.AddScoped<IUnitOfWork, UnitOfWork>();
+                    //services.AddDbContext<PerformedOperationContext>(op => op.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
                     services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
                     {
@@ -68,10 +70,7 @@ namespace CharpEvolution
                 };
                     });
 
-                    
                 }));
-
-
         }
     }
 }
