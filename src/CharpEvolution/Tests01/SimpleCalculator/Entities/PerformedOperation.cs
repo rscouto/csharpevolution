@@ -24,9 +24,12 @@ public class PerformedOperation
     [Required]
     public string MathOperation { get; set; }
     [Required]
+    [Column(TypeName = "decimal(18,5)")]
     public decimal NumOne { get; set; }
     [Required]
+    [Column(TypeName = "decimal(18,5)")]
     public decimal NumTwo { get; set; }
     [Required]
+    [Column(TypeName = "decimal(18,5)")]
     public decimal Result { get; set; }
 }

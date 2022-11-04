@@ -32,7 +32,6 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
         public void Calculate()
         {
-
             var foo = CollectOperationInfo();
 
             var result = _operationFactory.Calculate(foo.mathOperation, foo.number1, foo.number2);

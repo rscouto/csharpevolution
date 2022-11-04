@@ -4,6 +4,7 @@ using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -52,6 +53,7 @@ namespace CharpEvolution
                     services.AddScoped<MultiplicationOperation>();
                     services.AddScoped<DivisionOperation>();
                     services.AddScoped<PerformedOperationContext>();
+                    //services.AddDbContext<PerformedOperationContext>(op => op.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
                     services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
                     {

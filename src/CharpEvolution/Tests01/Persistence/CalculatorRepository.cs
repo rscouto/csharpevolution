@@ -119,7 +119,7 @@ public class CalculatorRepository : ICalculatorRepository
     }
     public IEnumerable<PerformedOperation> Find()
     {
-        List<PerformedOperation> operations = new();
+        var operations = new List<PerformedOperation>();
         var timer = new Stopwatch();
 
         timer.Start();
