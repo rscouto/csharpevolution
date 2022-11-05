@@ -6,6 +6,8 @@ namespace CsharpEvolution.Tests01.Persistence
     {
         IDbContextCalculatorRepository DbContextRepository { get; }
         ICalculatorRepository CalculatorRepository { get; }
+        IDbConnector DbConnector { get; set; }
+
 
         void BeginTransaction();
         void Commit();
@@ -14,6 +16,8 @@ namespace CsharpEvolution.Tests01.Persistence
 
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
+        public IDbConnector DbConnector { get; set; } 
+
         private readonly PerformedOperationContext _operationContext;
         private  IDbContextCalculatorRepository _dbCalculatorRepository = null;  
         private  ICalculatorRepository _calculatorRepository = null;
@@ -47,6 +51,7 @@ namespace CsharpEvolution.Tests01.Persistence
                 return _calculatorRepository;
             }
         }
+
 
         public void BeginTransaction()
         {
