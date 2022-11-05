@@ -19,20 +19,17 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private readonly string _quit = "Q";
         private readonly IMathOperationFactory _operationFactory;
         private readonly IOperationCache _cache;
-        private readonly ICalculatorRepository _repository;
-        private readonly IDbContextCalculatorRepository _dbContextCalculatorRepository; 
+        private readonly IUnitOfWork _unitOfWork; 
         private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
         public SimpleCalculator(
             IOperationCache cache,
-            ICalculatorRepository repository,
-            IDbContextCalculatorRepository dbContextCalculatorRepository,
+            IUnitOfWork unitOfWork, 
             IMathOperationFactory operationFactory)
         {
             _cache = cache;
-            _repository = repository;
-            _dbContextCalculatorRepository = dbContextCalculatorRepository;
+            _unitOfWork = unitOfWork;
             _operationFactory = operationFactory;
         }
 
@@ -44,14 +41,13 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             var performedOperation = new PerformedOperation(userInput.mathOperation, userInput.number1, userInput.number2, result);
 
-            _repository.Create(performedOperation);
-            _dbContextCalculatorRepository.Create(performedOperation);
+            _unitOfWork.DbContextRepository.Create(performedOperation);
+            var persistedId = _unitOfWork.CalculatorRepository.Create(performedOperation);
 
-            var persistedId = _repository.Create(performedOperation);
             performedOperation.Id = persistedId;
 
-            _dbContextCalculatorRepository.Find();
-            _repository.Find();
+            _unitOfWork.DbContextRepository.Find();
+            _unitOfWork.CalculatorRepository.Find();    
            
             StoreInCache(performedOperation);
 

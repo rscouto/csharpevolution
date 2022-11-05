@@ -16,12 +16,10 @@ namespace CsharpEvolution.Tests01.Persistence
 
     {
         private readonly PerformedOperationContext _operationContext;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public DbContextCalculatorRepository(PerformedOperationContext operationContext, IUnitOfWork unitOfWork)
+        public DbContextCalculatorRepository(PerformedOperationContext operationContext)
         {
             _operationContext = operationContext;
-            _unitOfWork = unitOfWork;
         }
 
         public int Create(PerformedOperation operation)
@@ -41,7 +39,7 @@ namespace CsharpEvolution.Tests01.Persistence
 
                 _operationContext.Operations.Add(performedOperation);
                 _operationContext.SaveChanges();
-                _unitOfWork.Commit();
+                //_unitOfWork.Commit();
 
                 timer.Stop();
 
@@ -53,7 +51,7 @@ namespace CsharpEvolution.Tests01.Persistence
             }
             catch (Exception)
             {
-                _unitOfWork.RollBack();
+                //_unitOfWork.RollBack();
                 return -1;
             }
 

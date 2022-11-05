@@ -17,6 +17,12 @@ public interface ICalculatorRepository
 public class CalculatorRepository : ICalculatorRepository
 {
     string connectionString = @"Data Source=BRRIOWN041122\SQLEXPRESS2;Initial Catalog=CalculatorApp;Integrated Security=True";
+    private readonly PerformedOperationContext _operationContext;
+
+    public CalculatorRepository(PerformedOperationContext operationContext)
+    {
+        _operationContext = operationContext;
+    }
 
     //TODO aumentar precisão dos decimais no banco
     public int Create(PerformedOperation operation)
