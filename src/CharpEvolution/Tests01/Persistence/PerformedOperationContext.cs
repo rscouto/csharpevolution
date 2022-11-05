@@ -1,8 +1,5 @@
 ﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Text;
 
 namespace CsharpEvolution.Tests01.Persistence
 {

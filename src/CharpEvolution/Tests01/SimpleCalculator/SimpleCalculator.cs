@@ -53,11 +53,11 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             Console.WriteLine($"O resultado da sua operação é: {result}");
             Console.WriteLine("Deseja efetuar mais alguma operação? S/N");
-            var input = Console.ReadLine().ToUpper();
+            var input = Console.ReadLine();
 
             Console.Clear();
 
-            if (input == "S") { Calculate(); }
+            if (input.Equals("s",StringComparison.CurrentCultureIgnoreCase)) { Calculate(); }
             EscapeApplication();
         }
 
