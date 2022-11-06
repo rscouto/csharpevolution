@@ -24,12 +24,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/operationsDbContext", async (IUnitOfWork _unitOfWork) =>
+app.MapGet("/operationsDbContext", (IUnitOfWork _unitOfWork) =>
 {
     return _unitOfWork.DbContextRepository.Find();
 });
 
-app.MapGet("/operations", async (IUnitOfWork _unitOfWork) =>
+app.MapGet("/operations", (IUnitOfWork _unitOfWork) =>
 {
    return _unitOfWork.CalculatorRepository.Find();
 });
