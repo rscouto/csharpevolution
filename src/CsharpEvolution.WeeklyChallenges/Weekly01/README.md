@@ -861,5 +861,113 @@ using (var db = new BlogContext())
     db.SaveChanges();
 }
 
+*Camadas OSI (Open Systems Interconnection)
+
+O processo de enviar uma requisição para um servidor é parecido com o de enviar um pacote pelos correios, 
+isto é, os pacotes enviados pelo computador passam por algumas etapas até chegar ao destino final. 
+Esses passos são o que chamamos de modelo OSI.
+
+Quando fazemos uma requisição para um servidor web, essa percorre um longo caminho da sua máquina até o servidor.
+
+Essa requisição saí do seu computador passa pelo seu provedor de internet e por diversos outros servidores até chegar no destino. 
+Quando o servidor manda uma resposta, esse caminho se repete.
+
+O modelo OSI é um padrão para os protocolos de rede. Protocolos nada mais são do que regras de comunicação usadas para 
+conectar dois ou mais computadores. O que o modelo OSI faz é agrupar esses protocolos em grupos específicos, ou camadas.
+
+Camada 1 - Física
+A primeira camada do modelo OSI é a camada física. Voltando para o exemplo dos correios, a camada física seriam as 
+estradas, ou seja, o caminho que os pacotes percorrem para chegar ao destino.
+
+Nesta camada são especificados os dispositivos, como hubs e os meios de transmissão, como os cabos de rede. Os dados 
+são transmitidos por esses meios e processados na próxima camada.
+
+Camada 2 - Enlace ou Ligação
+Fazendo um paralelo com os correios, essa camada funciona como um fiscal. Ele observa se o pacote tem algum defeito 
+em sua formatação e controla o fluxo com que os pacotes são enviados.
+
+Nesta camada, os dados recebidos do meio físico são verificados para ver se possuem algum erro e,se possuírem, 
+esse erro pode ser corrigido. Dessa forma, as camadas superiores podem assumir uma transmissão praticamente sem erros. 
+Esta camada também controla o fluxo que os dados são transmitidos.
+
+Nesta camadas que são definidas as tecnologias como as VLans, ou topologias como a Token ring, ou a ponto-a-ponto.
+Também é nesta camada que dispositivos como os switches funcionam.
+
+Esta camada é dividida em duas subcamadas: A camada MAC e a camada LLC.
+
+A subcamada MAC
+É nesta camada que possibilita a conexão de diversos computadores em uma rede. Cada máquina conectada na rede tem 
+um endereço físico, conhecido como endereço MAC. É esse endereço que a camada utiliza para identificar e enviar os pacotes.
+
+Essa camada atua como uma interface entre a camada física e a subcamada LLC.
+
+Já a subcamada LLC
+É nesta camada que temos o controle de fluxo dos dados na rede. É por conta dessa camada que conseguimos ter vários 
+protocolos da próxima camada convivendo dentro de uma mesma rede.
+
+Camada 3 - Rede
+Quando estamos enviando uma carta, os correios verificam quem é destinatário e quem é o remetente da mensagem. Se 
+existirem muitas mensagens para serem enviadas, eles podem priorizar quais serão enviadas primeiro e qual é o melhor 
+caminho para enviar essa carta.
+
+Isso é justamente o que a camada 3 faz, ela atua como uma central dos correios. Esta é talvez a camada mais atuante nas 
+redes, principalmente na internet.
+
+É nesta camada que temos o endereçamento IP de origem e de destino, ela também pode priorizar alguns pacotes e decidir 
+qual caminho seguir para enviar seus dados.
+
+Essa camada basicamente controla o roteamento entre a origem e destino do pacote.
+
+"Mas por que utilizar o endereço IP se já temos o endereço MAC?”
+
+O endereço MAC é o endereço físico de quem envia o pacote. Ou seja, se enviarmos um pacote e esse pacote 
+passar por cinco dispositivos diferentes (roteadores, switches, ou servidores, por exemplo) o endereço MAC é 
+alterado no processo. Já o endereço IP não sofre essa alteração.
+
+O endereço IP é a identificação da sua máquina na rede. É aquele endereço como 192.168.0.1.
+
+É nessa camada que temos protocolos como o IP ou o ICMP.
+
+Bem, as cartas chegaram a central dos correios, agora elas precisam ser transportadas.
+
+Camada 4 - Transporte
+Se na camada um temos as estradas e os caminhos que os dados percorrem, na camada quatro temos os caminhões e os carteiros.
+
+É esta camada que garante o envio e o recebimento dos pacotes vindos da camada 3. Ela gerencia o transporte dos 
+pacotes para garantir o sucesso no envio e no recebimento de dados.
+
+Esta camada lida muito com a qualidade do serviço para que os dados sejam entregues com consistência, isto é, sem 
+erros ou duplicações. Porém nem todos os protocolos desta camada garantem a entrega da mensagem.
+
+Protocolos muito comuns dessa camada são os protocolos TCP em UDP. O primeiro garante a entrega da mensagem, 
+diferente do segundo. Por não garantir a entrega da mensagem, o protocolo UDP é um pouco mais rápido que o TCP.
+
+Bem, mas para ocorrer o transporte de um pacote entre os computadores, é necessário que as máquinas consigam se 
+comunicar. Isso é função da próxima camada.
+
+Camada 5 - Sessão
+Está camada é responsável por estabelecer e encerrar a conexão entre hosts. É ela quem inicia e sincroniza os hosts.
+
+Além de realizar o estabelecimento das sessões, esta camada também provém algum suporte a elas, como registros de 
+log e realizando tarefas de segurança.
+
+Recebemos os pacotes, vamos checá-los para ver que dados tem dentro?
+
+Ainda não podemos. Os dados ainda precisam ser tratados para serem usados. Como a camada de sessão só é responsável 
+por estabelecer a conexão entre os hosts, o tratamento dos dados é de responsabilidade da próxima camada.
+
+Camada 6 - Apresentação
+Está é a camada responsável por fazer a tradução dos dados para que a próxima camada os use. Nesta camada temos a 
+conversão de códigos para caracteres, a conversão e compactação dos dados, além da criptografia desses dados, caso necessite.
+
+Depois de tratados, esses dados estão prontos para serem usados na próxima camada.
+
+Camada 7 - Aplicação
+A última camada do modelo OSI é a camada para consumir os dados. Nesta camada temos os programas que garantem a 
+interação humano-máquina. Nela conseguimos enviar e-mails, transferir arquivos, acessar websites, conectar remotamente 
+em outras máquinas, entre outras coisas (Falando em conectar remotamente, você conhece as diferenças entre Telnet e SSH?).
+
+É nesta camada que temos os protocolos mais conhecidos como o HTTP, FTP, além de serviços como o DNS.
+
 
 

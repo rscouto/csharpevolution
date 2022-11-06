@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28917.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpEvolution", "src\CharpEvolution\CsharpEvolution.csproj", "{B0F6AB7C-1AD9-4933-98E3-37F737809FD5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpEvolution.WeeklyChallenges", "src\CsharpEvolution.WeeklyChallenges\CsharpEvolution.WeeklyChallenges.csproj", "{226B4795-485D-4458-8AD6-81925222D705}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{822E79F4-F2AD-4AB9-B248-9EB11135F307}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{226B4795-485D-4458-8AD6-81925222D705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{226B4795-485D-4458-8AD6-81925222D705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{226B4795-485D-4458-8AD6-81925222D705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{822E79F4-F2AD-4AB9-B248-9EB11135F307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{822E79F4-F2AD-4AB9-B248-9EB11135F307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{822E79F4-F2AD-4AB9-B248-9EB11135F307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{822E79F4-F2AD-4AB9-B248-9EB11135F307}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
