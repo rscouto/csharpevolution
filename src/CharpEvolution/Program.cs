@@ -53,10 +53,10 @@ namespace CharpEvolution
                     services.AddScoped<MultiplicationOperation>();
                     services.AddScoped<DivisionOperation>();
 
-                    services.AddScoped<PerformedOperationContext>();
-                    services.AddScoped<ICalculatorRepository, CalculatorRepository>();
-                    services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
-                    services.AddScoped<IUnitOfWork, UnitOfWork>();
+                    //services.AddScoped<PerformedOperationContext>();
+                    //services.AddScoped<ICalculatorRepository, CalculatorRepository>();
+                    //services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
+                    //services.AddScoped<IUnitOfWork, UnitOfWork>();
                     //services.AddDbContext<PerformedOperationContext>(op => op.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
                     services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>

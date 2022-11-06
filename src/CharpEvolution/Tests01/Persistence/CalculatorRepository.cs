@@ -92,7 +92,7 @@ public class CalculatorRepository : ICalculatorRepository
                     var operationPerformed = new PerformedOperation();
 
                     operationPerformed.Id = reader.GetInt32("_id");
-                    operationPerformed.MathOperation = reader.GetString("MathOperation");
+                    operationPerformed.MathOperation = reader.GetString("MathOperation").Trim();
                     operationPerformed.NumOne = reader.GetDecimal("NumOne");
                     operationPerformed.NumTwo = reader.GetDecimal("NumTwo");
                     operationPerformed.Result = reader.GetDecimal("Result");
