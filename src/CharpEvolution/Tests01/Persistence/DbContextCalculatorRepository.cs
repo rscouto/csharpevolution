@@ -1,4 +1,5 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+﻿using CsharpEvolution.Tests01.SimpleCalculator.Common;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,75 +25,28 @@ namespace CsharpEvolution.Tests01.Persistence
 
         public int Create(PerformedOperation operation)
         {
-            var timer = new Stopwatch();
-            timer.Start();
+            using var _ = this.MeasureTimeCurrentMethod(); 
 
-            try
-            {
-                var performedOperation = new PerformedOperation
-                {
-                    MathOperation = operation.MathOperation,
-                    NumOne = operation.NumOne,
-                    NumTwo = operation.NumTwo,
-                    Result = operation.Result,
-                };
+            _operationContext.Operations.Add(operation);
+           //TODO colocar para fora
+            _operationContext.SaveChanges();
+            //_unitOfWork.Commit();
 
-                _operationContext.Operations.Add(performedOperation);
-                _operationContext.SaveChanges();
-                //_unitOfWork.Commit();
-
-                timer.Stop();
-
-                TimeSpan timeTaken = timer.Elapsed;
-                string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-                Console.WriteLine(elapsed);
-
-                return performedOperation.Id;
-            }
-            catch (Exception)
-            {
-                //_unitOfWork.RollBack();
-                return -1;
-            }
+            return operation.Id;
 
         }
 
         public IEnumerable<PerformedOperation> Find(string operation = null)
         {
-            var timer = new Stopwatch();
-            timer.Start();
+            using var _ = this.MeasureTimeCurrentMethod();
 
-            try
-            {
-                var operations = new List<PerformedOperation>();
+            var query = from op in _operationContext.Operations
+                        orderby op.Id descending
+                        select op;
 
-                var query = from op in _operationContext.Operations
-                            orderby op.Id descending
-                            select op;
+            var result = query.ToList();
 
-                foreach (var op in query)
-                {
-                    Console.WriteLine($"{op.Id}    {op.MathOperation}  " +
-                        $"Parâmetros(A = {op.NumOne},   B = {op.NumTwo})    Result:{op.Result}\n");
-                    operations.Add(op);
-                }
-
-                if (operations.Count > 0)
-                    return operations;
-
-                return Enumerable.Empty<PerformedOperation>();
-
-                TimeSpan timeTaken = timer.Elapsed;
-                string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-                Console.WriteLine(elapsed);
-
-                Console.ReadKey();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
+            return result;
         }
     }
 }
