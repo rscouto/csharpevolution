@@ -31,7 +31,6 @@ namespace CsharpEvolution.Tests01.Persistence
             //_unitOfWork.Commit();
 
             return operation.Id;
-
         }
 
         public IEnumerable<PerformedOperation> Find(string operation = null)

@@ -1,11 +1,8 @@
 ﻿using CsharpEvolution.Tests01.SimpleCalculator.Common;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
 
 namespace CsharpEvolution.Tests01.Persistence;
 
@@ -58,6 +55,7 @@ public class CalculatorRepository : ICalculatorRepository
             connection.Close();
         }
     }
+
     public IEnumerable<PerformedOperation> Find(string operation = null)
     {
         using var _ = this.MeasureTimeCurrentMethod();

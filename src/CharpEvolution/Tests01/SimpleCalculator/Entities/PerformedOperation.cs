@@ -18,8 +18,6 @@ public class PerformedOperation
         Result = result;
     }
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string MathOperation { get; set; }
     public decimal NumOne { get; set; }

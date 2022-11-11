@@ -48,15 +48,6 @@ namespace CharpEvolution
 
                     services.AddScoped<IMathOperationFactory, MathOperationFactory>();
 
-
-                    services.AddScoped<PerformedOperationContext>();
-                    services.AddScoped<ICalculatorRepository, CalculatorRepository>();
-                    services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
-                    services.AddScoped<IUnitOfWork, UnitOfWork>();
-                    services.AddScoped<IUnitOfWorkDbContext, UnitOfWorkDbContext>();
-
-
-
                     services.AddScoped<AdditionOperation>();
                     services.AddScoped<SubtractionOperation>();
                     services.AddScoped<MultiplicationOperation>();
