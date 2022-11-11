@@ -1,8 +1,6 @@
 ﻿using CsharpEvolution.Tests01.SimpleCalculator.Common;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CsharpEvolution.Tests01.Persistence

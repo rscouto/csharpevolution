@@ -1,5 +1,4 @@
-﻿using CsharpEvolution.Tests01.Persistence;
-using CsharpEvolution.Tests01.SimpleCalculator;
+﻿using CsharpEvolution.Tests01.SimpleCalculator;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
@@ -52,12 +51,6 @@ namespace CharpEvolution
                     services.AddScoped<SubtractionOperation>();
                     services.AddScoped<MultiplicationOperation>();
                     services.AddScoped<DivisionOperation>();
-
-                    //services.AddScoped<PerformedOperationContext>();
-                    //services.AddScoped<ICalculatorRepository, CalculatorRepository>();
-                    //services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
-                    //services.AddScoped<IUnitOfWork, UnitOfWork>();
-                    //services.AddDbContext<PerformedOperationContext>(op => op.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
                     services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
                     {
