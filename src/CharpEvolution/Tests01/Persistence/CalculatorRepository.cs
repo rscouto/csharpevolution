@@ -1,4 +1,5 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+﻿using CsharpEvolution.Tests01.SimpleCalculator.Common;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,8 +26,7 @@ public class CalculatorRepository : ICalculatorRepository
     //TODO aumentar precisão dos decimais no banco
     public int Create(PerformedOperation operation)
     {
-        var timer = new Stopwatch();
-        timer.Start();
+        using var _ = this.MeasureTimeCurrentMethod();
 
         string sql = @"INSERT INTO MEMORIADECALCULO(MathOperation, NumOne, NumTwo, Result) 
                        VALUES(@MathOperation, @NumOne, @NumTwo, @Result);" +
@@ -49,11 +49,7 @@ public class CalculatorRepository : ICalculatorRepository
             int id = (int)command.Parameters["@_id"].Value;
 
             connection.Close();
-
-            TimeSpan timeTaken = timer.Elapsed;
-            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-            Console.WriteLine(elapsed);
-
+                      
             return id;
         }
 
@@ -64,11 +60,10 @@ public class CalculatorRepository : ICalculatorRepository
     }
     public IEnumerable<PerformedOperation> Find(string operation = null)
     {
+        using var _ = this.MeasureTimeCurrentMethod();
+
         var operations = new List<PerformedOperation>();
-        var timer = new Stopwatch();
-
-        timer.Start();
-
+                
         var sql = @"SELECT m._id, m.MathOperation, m.NumOne, m.NumTwo, m.Result 
                     FROM MEMORIADECALCULO m 
                     ORDER BY _id DESC;";
@@ -99,11 +94,7 @@ public class CalculatorRepository : ICalculatorRepository
 
                 connection.Close();
             }
-
-            TimeSpan timeTaken = timer.Elapsed;
-            string elapsed = "\nTempo Decorrido: " + timeTaken.ToString(@"m\:ss\.fff") + "\n";
-            Console.WriteLine(elapsed);
-
+                        
             return operations;
         }
 

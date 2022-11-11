@@ -21,15 +21,8 @@ public class PerformedOperation
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    [Required]
     public string MathOperation { get; set; }
-    [Required]
-    [Column(TypeName = "decimal(18,5)")]
     public decimal NumOne { get; set; }
-    [Required]
-    [Column(TypeName = "decimal(18,5)")]
     public decimal NumTwo { get; set; }
-    [Required]
-    [Column(TypeName = "decimal(18,5)")]
     public decimal Result { get; set; }
 }

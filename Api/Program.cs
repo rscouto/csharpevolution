@@ -11,6 +11,7 @@ builder.Services.AddScoped<PerformedOperationContext>();
 builder.Services.AddScoped<ICalculatorRepository, CalculatorRepository>();
 builder.Services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWorkDbContext, UnitOfWorkDbContext>();
 
 var app = builder.Build();
 
@@ -23,9 +24,9 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 
-app.MapGet("/operationsDbContext", (IUnitOfWork _unitOfWork) =>
+app.MapGet("/operationsDbContext", (IUnitOfWorkDbContext _unitOfWorkDbContext) =>
 {
-    return _unitOfWork.DbContextRepository.Find();
+    return _unitOfWorkDbContext.DbContextRepository.Find();
 });
 
 app.MapGet("/operations", (IUnitOfWork _unitOfWork) =>

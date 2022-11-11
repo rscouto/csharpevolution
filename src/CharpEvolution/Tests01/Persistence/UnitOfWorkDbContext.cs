@@ -2,42 +2,41 @@
 
 namespace CsharpEvolution.Tests01.Persistence
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWorkDbContext
     {
-        ICalculatorRepository CalculatorRepository { get; }
+        IDbContextCalculatorRepository DbContextRepository { get; }
         IDbConnector DbConnector { get; set; }
-
 
         void BeginTransaction();
         void Commit();
         void RollBack();
     }
 
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWorkDbContext : IUnitOfWorkDbContext, IDisposable
     {
-        public IDbConnector DbConnector { get; set; } 
+        public IDbConnector DbConnector { get; set; }
 
         private readonly PerformedOperationContext _operationContext;
-        private  ICalculatorRepository _calculatorRepository = null;
+        private IDbContextCalculatorRepository _dbContextCalculatorRepository;
         private bool disposed = false;
 
-        public UnitOfWork()
+        public UnitOfWorkDbContext(PerformedOperationContext operationContext, IDbContextCalculatorRepository dbContextCalculatorRepository)
         {
-            
+            _operationContext = operationContext;
+            _dbContextCalculatorRepository = dbContextCalculatorRepository;
         }
 
-        public ICalculatorRepository CalculatorRepository
+        public IDbContextCalculatorRepository DbContextRepository
         {
             get
             {
-                if (_calculatorRepository == null)
+                if (_dbContextCalculatorRepository == null)
                 {
-                    _calculatorRepository = new CalculatorRepository();
+                    _dbContextCalculatorRepository = new DbContextCalculatorRepository(_operationContext);
                 }
-                return _calculatorRepository;
+                return _dbContextCalculatorRepository;
             }
         }
-
 
         public void BeginTransaction()
         {
@@ -46,7 +45,7 @@ namespace CsharpEvolution.Tests01.Persistence
 
         public void Commit()
         {
-            //_operationContext.SaveChanges();
+            _operationContext.SaveChanges();
         }
 
         protected virtual void Dispose(bool disposing)

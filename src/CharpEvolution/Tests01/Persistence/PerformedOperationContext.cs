@@ -19,7 +19,22 @@ namespace CsharpEvolution.Tests01.Persistence
             var modelBuilder = new ModelBuilder(); 
             modelBuilder.Entity<PerformedOperation>(p =>
                 {
+                    p.Property(p => p.Id)
+                    .ValueGeneratedOnAdd();
+                    
                     p.HasKey(p => p.Id);
+
+                    p.Property(p => p.NumOne)
+                    .HasColumnType("decimal(18,4)")
+                    .IsRequired();
+
+                    p.Property(p => p.NumTwo)
+                    .HasColumnType("decimal(18,4)")
+                    .IsRequired();
+
+                    p.Property(p => p.Result)
+                    .HasColumnType("decimal(18,4)")
+                    .IsRequired();   
                 });
             optionsBuilder.UseSqlServer(connectionString);
         }
