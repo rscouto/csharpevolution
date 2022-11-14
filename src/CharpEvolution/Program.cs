@@ -22,8 +22,8 @@ namespace CharpEvolution
 
         static void Main(string[] args)
         {
-            IHost host = CreateHostBuilder(args).Build();
-            host.Services.GetRequiredService<Program>().Run();
+            //IHost host = CreateHostBuilder(args).Build();
+            //host.Services.GetRequiredService<Program>().Run();
         }
 
         private void Run()
@@ -34,37 +34,37 @@ namespace CharpEvolution
             System.Environment.Exit(0);
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureServices((services =>
-                {
-                    services.AddScoped<Program>();
+        //private static IHostBuilder CreateHostBuilder(string[] args)
+        //{
+        //    return Host.CreateDefaultBuilder(args)
+        //        .ConfigureServices((services =>
+        //        {
+        //            services.AddScoped<Program>();
 
-                    services.AddScoped<ISimpleCalculator, SimpleCalculator>();
+        //            services.AddScoped<ISimpleCalculator, SimpleCalculator>();
 
-                    services.AddMemoryCache();
-                    services.AddScoped<IOperationCache, OperationCache>();
+        //            services.AddMemoryCache();
+        //            services.AddScoped<IOperationCache, OperationCache>();
 
-                    services.AddScoped<IMathOperationFactory, MathOperationFactory>();
+        //            services.AddScoped<IMathOperationFactory, MathOperationFactory>();
 
-                    services.AddScoped<AdditionOperation>();
-                    services.AddScoped<SubtractionOperation>();
-                    services.AddScoped<MultiplicationOperation>();
-                    services.AddScoped<DivisionOperation>();
+        //            services.AddScoped<AdditionOperation>();
+        //            services.AddScoped<SubtractionOperation>();
+        //            services.AddScoped<MultiplicationOperation>();
+        //            services.AddScoped<DivisionOperation>();
 
-                    services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
-                    {
-                        return new Dictionary<OperationType, IOperation>()
-                {
-                    { OperationType.SOMA, provider.GetService<AdditionOperation>() },
-                    { OperationType.SUBTRAÇÃO, provider.GetService<SubtractionOperation>() },
-                    { OperationType.MULTIPLICAÇÃO, provider.GetService<MultiplicationOperation>() },
-                    { OperationType.DIVISÃO, provider.GetService<DivisionOperation>() },
-                };
-                    });
+        //            services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
+        //            {
+        //                return new Dictionary<OperationType, IOperation>()
+        //        {
+        //            { OperationType.SOMA, provider.GetService<AdditionOperation>() },
+        //            { OperationType.SUBTRAÇÃO, provider.GetService<SubtractionOperation>() },
+        //            { OperationType.MULTIPLICAÇÃO, provider.GetService<MultiplicationOperation>() },
+        //            { OperationType.DIVISÃO, provider.GetService<DivisionOperation>() },
+        //        };
+        //            });
 
-                }));
-        }
+        //        }));
+        //}
     }
 }

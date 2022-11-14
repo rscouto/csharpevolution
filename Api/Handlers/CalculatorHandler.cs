@@ -9,55 +9,50 @@ namespace Api.Handlers;
 
 public interface ICalculatorHandler
 {
-    void Handle(MathOperationRequest request);
+    decimal Handle(MathOperationRequest request);
 }
 
 public class CalculatorHandler : ICalculatorHandler
 {
-    private readonly string _quit = "Q";
     private readonly IMathOperationFactory _operationFactory;
+    private readonly ISimpleCalculator _simpleCalculator;
     private readonly IOperationCache _cache;
-    private readonly IUnitOfWork _unitOfWork;
+    //private readonly IUnitOfWork _unitOfWork;
     private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
     private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
     public CalculatorHandler(
         IOperationCache cache,
-        IUnitOfWork unitOfWork,
+        //IUnitOfWork unitOfWork,
         IUnitOfWorkDbContext unitOfWorkDbContext,
+        ISimpleCalculator simpleCalculator, 
         IMathOperationFactory operationFactory)
     {
         _cache = cache;
-        _unitOfWork = unitOfWork;
+        //_unitOfWork = unitOfWork;
         _unitOfWorkDbContext = unitOfWorkDbContext;
+        _simpleCalculator = simpleCalculator;
         _operationFactory = operationFactory;
     }
 
-    public void Handle(MathOperationRequest request)
+    public decimal Handle(MathOperationRequest request)
     {
-        var result = _operationFactory.Calculate(request.MathOperation.ToString(), request.NumOne, request.NumTwo);
+        var result = _operationFactory.Calculate(request.MathOperation, request.NumOne, request.NumTwo);
 
-        var performedOperation = new PerformedOperation(request.MathOperation.ToString(), request.NumOne, request.NumTwo, result);
+        var performedOperation = new PerformedOperation(request.MathOperation, request.NumOne, request.NumTwo, result);
 
-        _unitOfWorkDbContext.DbContextRepository.Create(performedOperation);
-        var persistedId = _unitOfWork.CalculatorRepository.Create(performedOperation);
+        var persistedId = _unitOfWorkDbContext.DbContextRepository.Create(performedOperation);
+        //var persistedId = _unitOfWork.CalculatorRepository.Create(performedOperation);
 
         performedOperation.Id = persistedId;
 
         _unitOfWorkDbContext.DbContextRepository.Find();
-        _unitOfWork.CalculatorRepository.Find();
+        //_unitOfWork.CalculatorRepository.Find();
 
-        StoreInCache(performedOperation);
+        _simpleCalculator.StoreInCache(performedOperation);
 
-        Console.WriteLine($"O resultado da sua operação é: {result}");
-        Console.WriteLine("Deseja efetuar mais alguma operação? S/N");
-        var input = Console.ReadLine();
-
-        Console.Clear();
-
-        if (input.Equals("s", StringComparison.CurrentCultureIgnoreCase)) { Calculate(); }
-        EscapeApplication();
+        return result;
     }
 }
 

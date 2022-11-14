@@ -12,6 +12,12 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
     public interface ISimpleCalculator
     {
         void Calculate();
+        (decimal number1, decimal number2, string mathOperation) CollectOperationInfo();
+        void EscapeApplication();
+        decimal NumberValidator(string userInput);
+        string OperationValidator(string mathOperation);
+        void StoreInCache(PerformedOperation performedOperation);
+        void WriteCache();
     }
 
     public class SimpleCalculator : ISimpleCalculator
@@ -19,19 +25,19 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
         private readonly string _quit = "Q";
         private readonly IMathOperationFactory _operationFactory;
         private readonly IOperationCache _cache;
-        private readonly IUnitOfWork _unitOfWork; 
+        //private readonly IUnitOfWork _unitOfWork;
         private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
         private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                     "MULTIPLICAÇÃO", "DIVISÃO" };
 
         public SimpleCalculator(
             IOperationCache cache,
-            IUnitOfWork unitOfWork,
-            IUnitOfWorkDbContext unitOfWorkDbContext,   
+            //IUnitOfWork unitOfWork,
+            IUnitOfWorkDbContext unitOfWorkDbContext,
             IMathOperationFactory operationFactory)
         {
             _cache = cache;
-            _unitOfWork = unitOfWork;
+            //_unitOfWork = unitOfWork;
             _unitOfWorkDbContext = unitOfWorkDbContext;
             _operationFactory = operationFactory;
         }
@@ -44,14 +50,14 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             var performedOperation = new PerformedOperation(userInput.mathOperation, userInput.number1, userInput.number2, result);
 
-            _unitOfWorkDbContext.DbContextRepository.Create(performedOperation);
-            var persistedId = _unitOfWork.CalculatorRepository.Create(performedOperation);
+            var persistedId = _unitOfWorkDbContext.DbContextRepository.Create(performedOperation);
+            //var persistedId = _unitOfWork.CalculatorRepository.Create(performedOperation);
 
             performedOperation.Id = persistedId;
 
             _unitOfWorkDbContext.DbContextRepository.Find();
-            _unitOfWork.CalculatorRepository.Find();    
-           
+            //_unitOfWork.CalculatorRepository.Find();
+
             StoreInCache(performedOperation);
 
             Console.WriteLine($"O resultado da sua operação é: {result}");
@@ -60,11 +66,11 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
 
             Console.Clear();
 
-            if (input.Equals("s",StringComparison.CurrentCultureIgnoreCase)) { Calculate(); }
+            if (input.Equals("s", StringComparison.CurrentCultureIgnoreCase)) { Calculate(); }
             EscapeApplication();
         }
 
-        private void StoreInCache(PerformedOperation performedOperation)
+        public void StoreInCache(PerformedOperation performedOperation)
         {
             _cache.AddToCache(performedOperation);
 
@@ -74,7 +80,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             }
         }
 
-        private void WriteCache()
+        public void WriteCache()
         {
             var inCacheOperations = _cache.GetOperations();
 
@@ -89,7 +95,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             File.WriteAllText("MathOperations.txt", stringWithAllOperations.ToString().Trim());
         }
 
-        private (decimal number1, decimal number2, string mathOperation) CollectOperationInfo()
+        public (decimal number1, decimal number2, string mathOperation) CollectOperationInfo()
         {
             Console.WriteLine("Digite o primeiro número para a operação:");
             var number1 = NumberValidator(Console.ReadLine());
@@ -105,7 +111,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             return (number1, number2, mathOperation);
         }
 
-        private string OperationValidator(string mathOperation)
+        public string OperationValidator(string mathOperation)
         {
             bool isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
 
@@ -120,7 +126,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             return mathOperation;
         }
 
-        private decimal NumberValidator(string userInput)
+        public decimal NumberValidator(string userInput)
         {
             decimal number;
 
@@ -141,7 +147,7 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             return number;
         }
 
-        private void EscapeApplication()
+        public void EscapeApplication()
         {
             System.Environment.Exit(0);
         }

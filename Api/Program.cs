@@ -2,9 +2,13 @@ using Api.Handlers;
 using Api.Messages;
 using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator;
+using CsharpEvolution.Tests01.SimpleCalculator.Factory;
+using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
+using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +21,33 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<PerformedOperationContext>();
 builder.Services.AddScoped<ICalculatorRepository, CalculatorRepository>();
 builder.Services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitOfWorkDbContext, UnitOfWorkDbContext>();
 builder.Services.AddScoped<IValidator<MathOperationRequest>, MathOperationRequestValidator>();
 builder.Services.AddScoped<ICalculatorHandler, CalculatorHandler>();
+
+builder.Services.AddScoped<ISimpleCalculator, SimpleCalculator>();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IOperationCache, OperationCache>();
+
+builder.Services.AddScoped<IMathOperationFactory, MathOperationFactory>();
+
+builder.Services.AddScoped<AdditionOperation>();
+builder.Services.AddScoped<SubtractionOperation>();
+builder.Services.AddScoped<MultiplicationOperation>();
+builder.Services.AddScoped<DivisionOperation>();
+
+builder.Services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
+{
+    return new Dictionary<OperationType, IOperation>()
+                {
+                    { OperationType.SOMA, provider.GetService<AdditionOperation>() },
+                    { OperationType.SUBTRAÇÃO, provider.GetService<SubtractionOperation>() },
+                    { OperationType.MULTIPLICAÇÃO, provider.GetService<MultiplicationOperation>() },
+                    { OperationType.DIVISÃO, provider.GetService<DivisionOperation>() },
+                };
+});
 
 var app = builder.Build();
 
@@ -32,14 +59,14 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.MapGet("/calculation", (
+app.MapPost("/calculation", (
     [FromBody] MathOperationRequest request,
     IValidator<MathOperationRequest> _mathOperationRequestValidator,
     ICalculatorHandler _calculator) =>
 {
-    if (_mathOperationRequestValidator.Validate(request) is { IsValid: false } validate)
-        return new Response<MathOperationResponse>(HttpStatusCode.BadRequest, validate)
-            .CreateActionResult();
+    //if (_mathOperationRequestValidator.Validate(request) is { IsValid: false } validate)
+    //    return new Response<MathOperationResponse>(HttpStatusCode.BadRequest, validate)
+    //        .CreateActionResult();
 
     return _calculator.Handle(request);
 });
@@ -49,10 +76,10 @@ app.MapGet("/operationsDbContext", (IUnitOfWorkDbContext _unitOfWorkDbContext) =
     return _unitOfWorkDbContext.DbContextRepository.Find();
 });
 
-app.MapGet("/operations", (IUnitOfWork _unitOfWork) =>
-{
-    return _unitOfWork.CalculatorRepository.Find();
-});
+//app.MapGet("/operations", (IUnitOfWork _unitOfWork) =>
+//{
+    //return _unitOfWork.CalculatorRepository.Find();
+//});
 
 app.Run();
 
