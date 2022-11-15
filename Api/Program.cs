@@ -9,6 +9,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+using CsharpEvolution.Tests01.SimpleCalculator.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,14 +20,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<PerformedOperationContext>();
-builder.Services.AddScoped<ICalculatorRepository, CalculatorRepository>();
 builder.Services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
-//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitOfWorkDbContext, UnitOfWorkDbContext>();
 builder.Services.AddScoped<IValidator<MathOperationRequest>, MathOperationRequestValidator>();
-builder.Services.AddScoped<ICalculatorHandler, CalculatorHandler>();
 
-builder.Services.AddScoped<ISimpleCalculator, SimpleCalculator>();
+builder.Services.AddScoped<ICalculatorHandler, CalculatorHandler>();
+builder.Services.AddScoped<IGetHandler, GetHandler>();    
+
+builder.Services.AddScoped<IUtils, Utils>();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IOperationCache, OperationCache>();
@@ -60,26 +61,17 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.MapPost("/calculation", (
-    [FromBody] MathOperationRequest request,
+    MathOperationRequest request,
     IValidator<MathOperationRequest> _mathOperationRequestValidator,
     ICalculatorHandler _calculator) =>
 {
-    //if (_mathOperationRequestValidator.Validate(request) is { IsValid: false } validate)
-    //    return new Response<MathOperationResponse>(HttpStatusCode.BadRequest, validate)
-    //        .CreateActionResult();
-
     return _calculator.Handle(request);
 });
 
-app.MapGet("/operationsDbContext", (IUnitOfWorkDbContext _unitOfWorkDbContext) =>
+app.MapGet("/operationsDbContext", (IGetHandler _get) =>
 {
-    return _unitOfWorkDbContext.DbContextRepository.Find();
+    return _get.Handle();
 });
-
-//app.MapGet("/operations", (IUnitOfWork _unitOfWork) =>
-//{
-    //return _unitOfWork.CalculatorRepository.Find();
-//});
 
 app.Run();
 
