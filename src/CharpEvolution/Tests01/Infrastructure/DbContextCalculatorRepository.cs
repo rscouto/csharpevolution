@@ -8,7 +8,7 @@ namespace CsharpEvolution.Tests01.Persistence
     public interface IDbContextCalculatorRepository
     {
         int Create(PerformedOperation operation);
-        IEnumerable<PerformedOperation> Find(string operation = null);
+        IEnumerable<PerformedOperation> Find();
     }
 
     public class DbContextCalculatorRepository : IDbContextCalculatorRepository
@@ -33,13 +33,14 @@ namespace CsharpEvolution.Tests01.Persistence
             return operation.Id;
         }
 
-        public IEnumerable<PerformedOperation> Find(string operation = null)
+        public IEnumerable<PerformedOperation> Find()
         {
             using var _ = this.MeasureTimeCurrentMethod();
 
             var query = from op in _operationContext.Operations
                         orderby op.Id descending
                         select op;
+                      
 
             var result = query.ToList();
 

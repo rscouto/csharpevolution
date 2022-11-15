@@ -2,14 +2,12 @@ using Api.Handlers;
 using Api.Messages;
 using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator;
-using CsharpEvolution.Tests01.SimpleCalculator.Factory;
-using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
-using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Common;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+using CsharpEvolution.Tests01.SimpleCalculator.Factory;
+using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
+using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
