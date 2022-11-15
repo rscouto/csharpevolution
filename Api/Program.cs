@@ -24,7 +24,7 @@ builder.Services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRe
 builder.Services.AddScoped<IUnitOfWorkDbContext, UnitOfWorkDbContext>();
 builder.Services.AddScoped<IValidator<MathOperationRequest>, MathOperationRequestValidator>();
 
-builder.Services.AddScoped<ICalculatorHandler, CalculatorHandler>();
+builder.Services.AddScoped<ICalculateHandler, CalculateHandler>();
 builder.Services.AddScoped<IGetHandler, GetHandler>();    
 
 builder.Services.AddScoped<IUtils, Utils>();
@@ -60,15 +60,15 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.MapPost("/calculation", (
+app.MapPost("/operations", (
     MathOperationRequest request,
     IValidator<MathOperationRequest> _mathOperationRequestValidator,
-    ICalculatorHandler _calculator) =>
+    ICalculateHandler _calculator) =>
 {
     return _calculator.Handle(request);
 });
 
-app.MapGet("/operationsDbContext", (IGetHandler _get) =>
+app.MapGet("/operations", (IGetHandler _get) =>
 {
     return _get.Handle();
 });

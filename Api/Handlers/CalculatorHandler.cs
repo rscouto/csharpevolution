@@ -8,19 +8,19 @@ using CsharpEvolution.Tests01.SimpleCalculator.Common;
 
 namespace Api.Handlers;
 
-public interface ICalculatorHandler
+public interface ICalculateHandler
 {
     decimal Handle(MathOperationRequest request);
 }
 
-public class CalculatorHandler : ICalculatorHandler
+public class CalculateHandler : ICalculateHandler
 {
     private readonly IMathOperationFactory _operationFactory;
     private readonly IUtils _utils;
     private readonly IOperationCache _cache;
     private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
 
-    public CalculatorHandler(
+    public CalculateHandler(
         IOperationCache cache,
         IUnitOfWorkDbContext unitOfWorkDbContext,
         IUtils utils, 
