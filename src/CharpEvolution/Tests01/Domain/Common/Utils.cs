@@ -7,100 +7,99 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CsharpEvolution.Tests01.SimpleCalculator.Common
+namespace CsharpEvolution.Tests01.SimpleCalculator.Common;
+
+public interface IUtils
 {
-    public interface IUtils
+    void EscapeApplication();
+    decimal NumberValidator(string userInput);
+    string OperationValidator(string mathOperation);
+    void StoreInCache(PerformedOperation performedOperation);
+    void WriteCache();
+}
+
+public class Utils : IUtils
+{
+    private readonly string _quit = "Q";
+    private readonly IMathOperationFactory _operationFactory;
+    private readonly IOperationCache _cache;
+    private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
+    private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
+                                                                "MULTIPLICAÇÃO", "DIVISÃO" };
+
+    public Utils(
+        IOperationCache cache,
+        IUnitOfWorkDbContext unitOfWorkDbContext,
+        IMathOperationFactory operationFactory)
     {
-        void EscapeApplication();
-        decimal NumberValidator(string userInput);
-        string OperationValidator(string mathOperation);
-        void StoreInCache(PerformedOperation performedOperation);
-        void WriteCache();
+        _cache = cache;
+        _unitOfWorkDbContext = unitOfWorkDbContext;
+        _operationFactory = operationFactory;
     }
 
-    public class Utils : IUtils
+    public void StoreInCache(PerformedOperation performedOperation)
     {
-        private readonly string _quit = "Q";
-        private readonly IMathOperationFactory _operationFactory;
-        private readonly IOperationCache _cache;
-        private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
-        private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
-                                                                    "MULTIPLICAÇÃO", "DIVISÃO" };
+        _cache.AddToCache(performedOperation);
 
-        public Utils(
-            IOperationCache cache,
-            IUnitOfWorkDbContext unitOfWorkDbContext,
-            IMathOperationFactory operationFactory)
+        if (_cache.GetOperations().Count() % 2 == 0)
         {
-            _cache = cache;
-            _unitOfWorkDbContext = unitOfWorkDbContext;
-            _operationFactory = operationFactory;
+            WriteCache();
+        }
+    }
+
+    public void WriteCache()
+    {
+        var inCacheOperations = _cache.GetOperations();
+
+        StringBuilder stringWithAllOperations = new StringBuilder();
+
+        foreach (var operation in inCacheOperations)
+        {
+            stringWithAllOperations.Append($"{operation.Id}       {operation.MathOperation}             " +
+                $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}\n");
         }
 
-        public void StoreInCache(PerformedOperation performedOperation)
-        {
-            _cache.AddToCache(performedOperation);
+        File.WriteAllText("MathOperations.txt", stringWithAllOperations.ToString().Trim());
+    }
 
-            if (_cache.GetOperations().Count() % 2 == 0)
-            {
-                WriteCache();
-            }
+    public string OperationValidator(string mathOperation)
+    {
+        bool isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
+
+        while (!isValidOperation)
+        {
+            Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
+            "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
+            mathOperation = Console.ReadLine();
+            if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
+            isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
         }
+        return mathOperation;
+    }
 
-        public void WriteCache()
+    public decimal NumberValidator(string userInput)
+    {
+        decimal number;
+
+        while (!decimal.TryParse(userInput, out number))
         {
-            var inCacheOperations = _cache.GetOperations();
+            Console.WriteLine("Digite um número válido. Forneça o número para a operação ou " +
+                "pressione 'Q' para sair da aplicação:");
 
-            StringBuilder stringWithAllOperations = new StringBuilder();
+            userInput = Console.ReadLine();
 
-            foreach (var operation in inCacheOperations)
+            if (userInput.Equals(_quit, StringComparison.InvariantCultureIgnoreCase))
             {
-                stringWithAllOperations.Append($"{operation.Id}       {operation.MathOperation}             " +
-                    $"Parâmetros(A = {operation.NumOne}, B = {operation.NumTwo}) {operation.Result}\n");
-            }
-
-            File.WriteAllText("MathOperations.txt", stringWithAllOperations.ToString().Trim());
-        }
-
-        public string OperationValidator(string mathOperation)
-        {
-            bool isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
-
-            while (!isValidOperation)
-            {
-                Console.WriteLine("Digite uma operação matemática válida. Tente novamente ou " +
-                "pressione 'Q' e pressione 'Enter' para sair da aplicação:");
-                mathOperation = Console.ReadLine();
-                if (mathOperation.Equals(_quit, StringComparison.CurrentCultureIgnoreCase)) { EscapeApplication(); }
-                isValidOperation = _mathOperations.Any(x => x.Equals(mathOperation, StringComparison.CurrentCultureIgnoreCase));
-            }
-            return mathOperation;
-        }
-
-        public decimal NumberValidator(string userInput)
-        {
-            decimal number;
-
-            while (!decimal.TryParse(userInput, out number))
-            {
-                Console.WriteLine("Digite um número válido. Forneça o número para a operação ou " +
-                    "pressione 'Q' para sair da aplicação:");
-
-                userInput = Console.ReadLine();
-
-                if (userInput.Equals(_quit, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    EscapeApplication();
-                }
-
+                EscapeApplication();
             }
 
-            return number;
         }
 
-        public void EscapeApplication()
-        {
-            Environment.Exit(0);
-        }
+        return number;
+    }
+
+    public void EscapeApplication()
+    {
+        Environment.Exit(0);
     }
 }

@@ -2,7 +2,6 @@
 using Api.Messages;
 using AutoFixture;
 using CsharpEvolution.Tests01.Persistence;
-using CsharpEvolution.Tests01.SimpleCalculator;
 using CsharpEvolution.Tests01.SimpleCalculator.Common;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
@@ -16,7 +15,6 @@ public class CalculateHandlerTests
 
     private readonly Fixture _fixture;
     private readonly Mock<IUnitOfWorkDbContext> _repositoryMock;
-    private readonly Mock<IOperationCache> _cacheMock;
     private readonly Mock<IUtils> _utilsMock;
     private readonly Mock<IMathOperationFactory> _factoryMock;
     private readonly CalculateHandler _handler;
@@ -25,10 +23,9 @@ public class CalculateHandlerTests
     {
         _fixture = new Fixture();
         _repositoryMock = new Mock<IUnitOfWorkDbContext>(MockBehavior.Strict);
-        _cacheMock = new Mock<IOperationCache>(MockBehavior.Strict);
         _utilsMock = new Mock<IUtils>(MockBehavior.Strict);
         _factoryMock = new Mock<IMathOperationFactory>(MockBehavior.Strict);
-        _handler = new CalculateHandler(_cacheMock.Object, _repositoryMock.Object, _utilsMock.Object, _factoryMock.Object);
+        _handler = new CalculateHandler(_repositoryMock.Object, _utilsMock.Object, _factoryMock.Object);
     }
 
     [Fact]
