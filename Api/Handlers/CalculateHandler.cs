@@ -42,8 +42,6 @@ public class CalculateHandler : ICalculateHandler
 
         performedOperation.Id = persistedId;
 
-        _unitOfWorkDbContext.DbContextRepository.Find();
-
         _utils.StoreInCache(performedOperation);
 
         return result;
