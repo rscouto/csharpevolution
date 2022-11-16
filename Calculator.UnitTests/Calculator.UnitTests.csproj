@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Api\Api.csproj" />
-    <ProjectReference Include="..\src\CharpEvolution\CsharpEvolution.csproj" />
   </ItemGroup>
 
 </Project>

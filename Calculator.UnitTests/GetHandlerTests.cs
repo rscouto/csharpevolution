@@ -23,10 +23,9 @@ public class GetHandlerTests
     }
 
     [Fact]
-    public async Task Given_no_operations_in_DB_should_return_empty_list()
+    public void Given_no_operations_in_DB_should_return_empty_list()
     {
         //Arrange
-        var id = Guid.NewGuid();
 
         _repositoryMock.Setup(x => x.DbContextRepository.Find())
             .Returns((Enumerable.Empty<PerformedOperation>));
@@ -41,7 +40,7 @@ public class GetHandlerTests
     }
 
     [Fact]
-    public async Task Given_populated_DB_should_return_list_of_operations()
+    public void Given_populated_DB_should_return_list_of_operations()
     {
         //Arrange
 
