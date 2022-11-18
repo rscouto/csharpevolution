@@ -4,7 +4,7 @@ namespace CsharpEvolution.Tests01.Persistence
 {
     public interface IUnitOfWork
     {
-        IPerformedOperationRepository DbContextRepository { get; }
+        IPerformedOperationRepository PerformedOperationRepository { get; }
         //IDbConnector DbConnector { get; set; }
 
         void BeginTransaction();
@@ -15,15 +15,15 @@ namespace CsharpEvolution.Tests01.Persistence
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         //public IDbConnector DbConnector { get; set; }
-        public IPerformedOperationRepository DbContextRepository { get; }
+        public IPerformedOperationRepository PerformedOperationRepository { get; }
 
         private readonly PerformedOperationContext _operationContext;
         private bool disposed = false;
 
-        public UnitOfWork(PerformedOperationContext operationContext, IPerformedOperationRepository dbContextCalculatorRepository)
+        public UnitOfWork(PerformedOperationContext operationContext, IPerformedOperationRepository performedOperationRepository)
         {
             _operationContext = operationContext;
-            DbContextRepository = dbContextCalculatorRepository;
+            PerformedOperationRepository = performedOperationRepository;
         }
 
 

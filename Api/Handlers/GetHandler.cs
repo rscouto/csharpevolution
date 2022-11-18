@@ -10,16 +10,16 @@ public interface IGetHandler
 
 public class GetHandler : IGetHandler
 {
-    private readonly IUnitOfWork _unitOfWorkDbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetHandler(IUnitOfWork unitOfWorkDbContext)
+    public GetHandler(IUnitOfWork unitOfWork)
     {
-        _unitOfWorkDbContext = unitOfWorkDbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public IEnumerable<PerformedOperation> Handle()
     {
-        return _unitOfWorkDbContext.DbContextRepository.Find();
+        return _unitOfWork.PerformedOperationRepository.Find();
     }
 }
 

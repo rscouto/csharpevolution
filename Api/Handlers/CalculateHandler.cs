@@ -15,14 +15,14 @@ public class CalculateHandler : ICalculateHandler
 {
     private readonly IMathOperationFactory _operationFactory;
     private readonly IUtils _utils;
-    private readonly IUnitOfWork _unitOfWorkDbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CalculateHandler(
-        IUnitOfWork unitOfWorkDbContext,
+        IUnitOfWork unitOfWork,
         IUtils utils, 
         IMathOperationFactory operationFactory)
     {
-        _unitOfWorkDbContext = unitOfWorkDbContext;
+        _unitOfWork = unitOfWork;
         _utils = utils;
         _operationFactory = operationFactory;
     }
@@ -35,13 +35,13 @@ public class CalculateHandler : ICalculateHandler
 
         var performedOperation = new PerformedOperation(request.MathOperation, request.NumOne, request.NumTwo, result);
 
-        var persistedId = _unitOfWorkDbContext.DbContextRepository.Create(performedOperation);
+        var persistedId = _unitOfWork.PerformedOperationRepository.Create(performedOperation);
 
         performedOperation.Id = persistedId;
 
         _utils.StoreInCache(performedOperation);
 
-        _unitOfWorkDbContext.Commit();
+        _unitOfWork.Commit();
 
         return result;
     }

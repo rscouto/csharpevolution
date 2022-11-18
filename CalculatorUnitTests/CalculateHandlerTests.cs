@@ -51,7 +51,7 @@ public class CalculateHandlerTests
         var expectedResult = result;
 
         _unitOfWorkMock
-            .Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
+            .Setup(x => x.PerformedOperationRepository.Create(It.IsAny<PerformedOperation>()))
             .Returns(operation.Id);
 
         _factoryMock
@@ -67,7 +67,7 @@ public class CalculateHandlerTests
 
         //Assert
         _unitOfWorkMock
-            .Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
+            .Verify(x => x.PerformedOperationRepository.Create(It.IsAny<PerformedOperation>()),
             Times.Once);
         result.Should().Be(operation.Result);
     }
@@ -94,7 +94,7 @@ public class CalculateHandlerTests
         var message = "Operação não reconhecida";
 
         _unitOfWorkMock
-            .Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
+            .Setup(x => x.PerformedOperationRepository.Create(It.IsAny<PerformedOperation>()))
             .Returns(operation.Id);
 
         _factoryMock
@@ -113,7 +113,7 @@ public class CalculateHandlerTests
         act.Should().Throw<ArgumentException>()
             .WithMessage(message);
 
-        _unitOfWorkMock.Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
+        _unitOfWorkMock.Verify(x => x.PerformedOperationRepository.Create(It.IsAny<PerformedOperation>()),
             Times.Never);
     }
 }

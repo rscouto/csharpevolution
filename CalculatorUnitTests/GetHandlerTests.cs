@@ -25,14 +25,14 @@ public class GetHandlerTests
     {
         //Arrange
 
-        _repositoryMock.Setup(x => x.DbContextRepository.Find())
+        _repositoryMock.Setup(x => x.PerformedOperationRepository.Find())
             .Returns((Enumerable.Empty<PerformedOperation>));
 
         //Act
         var result = _handler.Handle();
 
         //Assert
-        _repositoryMock.Verify(x => x.DbContextRepository.Find(),
+        _repositoryMock.Verify(x => x.PerformedOperationRepository.Find(),
             Times.Once);
         result.Should().BeEmpty();
     }
@@ -46,14 +46,14 @@ public class GetHandlerTests
            .Without(x => x.Id)
            .CreateMany();
 
-        _repositoryMock.Setup(x => x.DbContextRepository.Find())
+        _repositoryMock.Setup(x => x.PerformedOperationRepository.Find())
             .Returns(operations);
 
         //Act
         var result = _handler.Handle();
 
         //Assert
-        _repositoryMock.Verify(x => x.DbContextRepository.Find(),
+        _repositoryMock.Verify(x => x.PerformedOperationRepository.Find(),
             Times.Once);
         result.Should().BeEquivalentTo(operations);
     }

@@ -1,6 +1,4 @@
-﻿using CsharpEvolution.Tests01.Persistence;
-using CsharpEvolution.Tests01.SimpleCalculator.Entities;
-using CsharpEvolution.Tests01.SimpleCalculator.Factory;
+﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,20 +19,13 @@ public interface IUtils
 public class Utils : IUtils
 {
     private readonly string _quit = "Q";
-    private readonly IMathOperationFactory _operationFactory;
     private readonly IOperationCache _cache;
-    private readonly IUnitOfWork _unitOfWorkDbContext;
     private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                 "MULTIPLICAÇÃO", "DIVISÃO" };
 
-    public Utils(
-        IOperationCache cache,
-        IUnitOfWork unitOfWorkDbContext,
-        IMathOperationFactory operationFactory)
+    public Utils(IOperationCache cache)
     {
         _cache = cache;
-        _unitOfWorkDbContext = unitOfWorkDbContext;
-        _operationFactory = operationFactory;
     }
 
     public void StoreInCache(PerformedOperation performedOperation)
