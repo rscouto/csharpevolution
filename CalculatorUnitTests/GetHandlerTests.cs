@@ -4,8 +4,6 @@ using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using FluentAssertions;
 using Moq;
-using System.Net;
-using Xunit;
 
 namespace Calculator.UnitTests;
 public class GetHandlerTests
@@ -59,6 +57,4 @@ public class GetHandlerTests
             Times.Once);
         result.Should().BeEquivalentTo(operations);
     }
-
-
 }

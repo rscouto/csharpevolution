@@ -10,7 +10,7 @@ using Moq;
 using Xunit;
 
 namespace Calculator.UnitTests;
-public class CalculateHandlerTests
+public class CalculateHandlerTestsB
 {
 
     private readonly Fixture _fixture;
@@ -19,7 +19,7 @@ public class CalculateHandlerTests
     private readonly Mock<IMathOperationFactory> _factoryMock;
     private readonly CalculateHandler _handler;
 
-    public CalculateHandlerTests()
+    public CalculateHandlerTestsB()
     {
         _fixture = new Fixture();
         _repositoryMock = new Mock<IUnitOfWorkDbContext>(MockBehavior.Strict);
