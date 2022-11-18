@@ -23,29 +23,33 @@ public class CalculateHandlerTests
         _fixture = new Fixture();
         _unitOfWork = new Mock<IUnitOfWorkDbContext>();
         _utilsMock = new Mock<IUtils>(MockBehavior.Strict);
-        _factoryMock = new Mock<IMathOperationFactory>(MockBehavior.Strict);
+        _factoryMock = new Mock<IMathOperationFactory>();
         _handler = new CalculateHandler(_unitOfWork.Object, _utilsMock.Object, _factoryMock.Object);
     }
 
-    [Fact]
-    public void Given_request_should_return_correct_result()
+    [InlineData("soma", 200, -500, -300)]
+    [InlineData("subtração", -200, -500, -700)]
+    [InlineData("multiplicação", 20, 60, 1200)]
+    [InlineData("divisão", 30, 120, 0.25)]
+    [Theory]
+    public void Given_request_should_return_correct_result(string mathOperation, decimal numberOne, decimal numberTwo, decimal result)
     {
         //Arrange
 
         var request = _fixture.Build<MathOperationRequest>()
-            .With(x => x.MathOperation, "soma")
-            .With(x => x.NumOne, 366)
-            .With(x => x.NumTwo, 244)
+            .With(x => x.MathOperation, mathOperation)
+            .With(x => x.NumOne, numberOne)
+            .With(x => x.NumTwo, numberTwo)
             .Create();
 
         var operation = _fixture.Build<PerformedOperation>()
-            .With(x => x.MathOperation, "soma")
+            .With(x => x.MathOperation, mathOperation)
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
-            .With(x => x.Result, 610)
+            .With(x => x.Result, result)
             .Create();
 
-        var expectedResult = 610M;
+        var expectedResult = result;
 
         _unitOfWork.Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
             .Returns(operation.Id);
@@ -57,7 +61,7 @@ public class CalculateHandlerTests
 
         //Act
 
-        var result = _handler.Handle(request);
+        var operationResult = _handler.Handle(request);
 
         //Assert
         _unitOfWork.Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
@@ -71,7 +75,7 @@ public class CalculateHandlerTests
         //Arrange
 
         var request = _fixture.Build<MathOperationRequest>()
-            .Without(x => x.MathOperation)
+            .With(x => x.MathOperation, "invalid")
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
             .Create();
@@ -92,6 +96,10 @@ public class CalculateHandlerTests
         _factoryMock.Setup(x => x.Calculate(operation.MathOperation, operation.NumOne, operation.NumTwo))
             .Throws(new ArgumentException(message));
 
+        //_factoryMock.Setup(x => x.Calculate(request.MathOperation, It.IsAny<decimal>(), It.IsAny<decimal>()))
+        //    .Throws<ArgumentException>();
+
+
         _utilsMock.Setup(x => x.StoreInCache(It.Is<PerformedOperation>(x => x.Id == operation.Id)));
 
         //Act
@@ -102,7 +110,5 @@ public class CalculateHandlerTests
         _unitOfWork.Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
             Times.Never);
         
-        //result.Should().Be(operation.Result);
     }
-
 }
