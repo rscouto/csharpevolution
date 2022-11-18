@@ -23,13 +23,13 @@ public class Utils : IUtils
     private readonly string _quit = "Q";
     private readonly IMathOperationFactory _operationFactory;
     private readonly IOperationCache _cache;
-    private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
+    private readonly IUnitOfWork _unitOfWorkDbContext;
     private readonly List<string> _mathOperations = new List<string> { "SOMA", "SUBTRAÇÃO",
                                                                 "MULTIPLICAÇÃO", "DIVISÃO" };
 
     public Utils(
         IOperationCache cache,
-        IUnitOfWorkDbContext unitOfWorkDbContext,
+        IUnitOfWork unitOfWorkDbContext,
         IMathOperationFactory operationFactory)
     {
         _cache = cache;

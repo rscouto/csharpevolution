@@ -17,8 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<PerformedOperationContext>();
-builder.Services.AddScoped<IDbContextCalculatorRepository, DbContextCalculatorRepository>();
-builder.Services.AddScoped<IUnitOfWorkDbContext, UnitOfWorkDbContext>();
+builder.Services.AddScoped<IPerformedOperationRepository, PerformedOperationRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IValidator<MathOperationRequest>, MathOperationRequestValidator>();
 
 builder.Services.AddScoped<ICalculateHandler, CalculateHandler>();

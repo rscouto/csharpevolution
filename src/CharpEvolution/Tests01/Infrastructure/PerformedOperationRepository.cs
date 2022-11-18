@@ -5,18 +5,18 @@ using System.Linq;
 
 namespace CsharpEvolution.Tests01.Persistence
 {
-    public interface IDbContextCalculatorRepository
+    public interface IPerformedOperationRepository
     {
         int Create(PerformedOperation operation);
         IEnumerable<PerformedOperation> Find();
     }
 
-    public class DbContextCalculatorRepository : IDbContextCalculatorRepository
+    public class PerformedOperationRepository : IPerformedOperationRepository
 
     {
         private readonly PerformedOperationContext _operationContext;
 
-        public DbContextCalculatorRepository(PerformedOperationContext operationContext)
+        public PerformedOperationRepository(PerformedOperationContext operationContext)
         {
             _operationContext = operationContext;
         }

@@ -2,25 +2,25 @@
 
 namespace CsharpEvolution.Tests01.Persistence
 {
-    public interface IUnitOfWorkDbContext
+    public interface IUnitOfWork
     {
-        IDbContextCalculatorRepository DbContextRepository { get; }
-        IDbConnector DbConnector { get; set; }
+        IPerformedOperationRepository DbContextRepository { get; }
+        //IDbConnector DbConnector { get; set; }
 
         void BeginTransaction();
         void Commit();
         void RollBack();
     }
 
-    public class UnitOfWorkDbContext : IUnitOfWorkDbContext, IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        public IDbConnector DbConnector { get; set; }
-        public IDbContextCalculatorRepository DbContextRepository { get; }
+        //public IDbConnector DbConnector { get; set; }
+        public IPerformedOperationRepository DbContextRepository { get; }
 
         private readonly PerformedOperationContext _operationContext;
         private bool disposed = false;
 
-        public UnitOfWorkDbContext(PerformedOperationContext operationContext, IDbContextCalculatorRepository dbContextCalculatorRepository)
+        public UnitOfWork(PerformedOperationContext operationContext, IPerformedOperationRepository dbContextCalculatorRepository)
         {
             _operationContext = operationContext;
             DbContextRepository = dbContextCalculatorRepository;

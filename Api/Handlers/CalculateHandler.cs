@@ -15,10 +15,10 @@ public class CalculateHandler : ICalculateHandler
 {
     private readonly IMathOperationFactory _operationFactory;
     private readonly IUtils _utils;
-    private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
+    private readonly IUnitOfWork _unitOfWorkDbContext;
 
     public CalculateHandler(
-        IUnitOfWorkDbContext unitOfWorkDbContext,
+        IUnitOfWork unitOfWorkDbContext,
         IUtils utils, 
         IMathOperationFactory operationFactory)
     {

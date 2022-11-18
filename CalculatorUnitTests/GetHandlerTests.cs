@@ -10,13 +10,13 @@ public class GetHandlerTests
 {
 
     private readonly Fixture _fixture;
-    private readonly Mock<IUnitOfWorkDbContext> _repositoryMock;
+    private readonly Mock<IUnitOfWork> _repositoryMock;
     private readonly GetHandler _handler;
 
     public GetHandlerTests()
     {
         _fixture = new Fixture();
-        _repositoryMock = new Mock<IUnitOfWorkDbContext>(MockBehavior.Strict);
+        _repositoryMock = new Mock<IUnitOfWork>(MockBehavior.Strict);
         _handler = new GetHandler(_repositoryMock.Object);
     }
 

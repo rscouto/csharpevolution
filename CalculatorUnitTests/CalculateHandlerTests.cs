@@ -12,7 +12,7 @@ namespace Calculator.UnitTests;
 public class CalculateHandlerTests
 {
     private readonly Fixture _fixture;
-    private readonly Mock<IUnitOfWorkDbContext> _unitOfWorkMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IUtils> _utilsMock;
     private readonly Mock<IMathOperationFactory> _factoryMock;
     private readonly CalculateHandler _handler;
@@ -20,7 +20,7 @@ public class CalculateHandlerTests
     public CalculateHandlerTests()
     {
         _fixture = new Fixture();
-        _unitOfWorkMock = new Mock<IUnitOfWorkDbContext>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
         _utilsMock = new Mock<IUtils>(MockBehavior.Strict);
         _factoryMock = new Mock<IMathOperationFactory>();
         _handler = new CalculateHandler(_unitOfWorkMock.Object, _utilsMock.Object, _factoryMock.Object);

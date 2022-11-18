@@ -10,9 +10,9 @@ public interface IGetHandler
 
 public class GetHandler : IGetHandler
 {
-    private readonly IUnitOfWorkDbContext _unitOfWorkDbContext;
+    private readonly IUnitOfWork _unitOfWorkDbContext;
 
-    public GetHandler(IUnitOfWorkDbContext unitOfWorkDbContext)
+    public GetHandler(IUnitOfWork unitOfWorkDbContext)
     {
         _unitOfWorkDbContext = unitOfWorkDbContext;
     }
