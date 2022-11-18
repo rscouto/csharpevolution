@@ -39,6 +39,8 @@ public class CalculateHandler : ICalculateHandler
 
         _utils.StoreInCache(performedOperation);
 
+        _unitOfWorkDbContext.Commit();
+
         return result;
     }
 }

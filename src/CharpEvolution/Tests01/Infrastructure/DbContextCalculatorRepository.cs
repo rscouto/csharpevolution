@@ -26,9 +26,7 @@ namespace CsharpEvolution.Tests01.Persistence
             using var _ = this.MeasureTimeCurrentMethod(); 
 
             _operationContext.Operations.Add(operation);
-           //TODO colocar para fora
-            _operationContext.SaveChanges();
-            //_unitOfWork.Commit();
+            //_operationContext.SaveChanges();
 
             return operation.Id;
         }
