@@ -15,28 +15,17 @@ namespace CsharpEvolution.Tests01.Persistence
     public class UnitOfWorkDbContext : IUnitOfWorkDbContext, IDisposable
     {
         public IDbConnector DbConnector { get; set; }
+        public IDbContextCalculatorRepository DbContextRepository { get; }
 
         private readonly PerformedOperationContext _operationContext;
-        private IDbContextCalculatorRepository _dbContextCalculatorRepository;
         private bool disposed = false;
 
         public UnitOfWorkDbContext(PerformedOperationContext operationContext, IDbContextCalculatorRepository dbContextCalculatorRepository)
         {
             _operationContext = operationContext;
-            _dbContextCalculatorRepository = dbContextCalculatorRepository;
+            DbContextRepository = dbContextCalculatorRepository;
         }
 
-        public IDbContextCalculatorRepository DbContextRepository
-        {
-            get
-            {
-                if (_dbContextCalculatorRepository == null)
-                {
-                    _dbContextCalculatorRepository = new DbContextCalculatorRepository(_operationContext);
-                }
-                return _dbContextCalculatorRepository;
-            }
-        }
 
         public void BeginTransaction()
         {

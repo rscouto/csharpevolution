@@ -11,9 +11,8 @@ using Moq;
 namespace Calculator.UnitTests;
 public class CalculateHandlerTests
 {
-
     private readonly Fixture _fixture;
-    private readonly Mock<IUnitOfWorkDbContext> _unitOfWork;
+    private readonly Mock<IUnitOfWorkDbContext> _unitOfWorkMock;
     private readonly Mock<IUtils> _utilsMock;
     private readonly Mock<IMathOperationFactory> _factoryMock;
     private readonly CalculateHandler _handler;
@@ -21,10 +20,10 @@ public class CalculateHandlerTests
     public CalculateHandlerTests()
     {
         _fixture = new Fixture();
-        _unitOfWork = new Mock<IUnitOfWorkDbContext>();
+        _unitOfWorkMock = new Mock<IUnitOfWorkDbContext>();
         _utilsMock = new Mock<IUtils>(MockBehavior.Strict);
         _factoryMock = new Mock<IMathOperationFactory>();
-        _handler = new CalculateHandler(_unitOfWork.Object, _utilsMock.Object, _factoryMock.Object);
+        _handler = new CalculateHandler(_unitOfWorkMock.Object, _utilsMock.Object, _factoryMock.Object);
     }
 
     [InlineData("soma", 200, -500, -300)]
@@ -51,20 +50,24 @@ public class CalculateHandlerTests
 
         var expectedResult = result;
 
-        _unitOfWork.Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
+        _unitOfWorkMock
+            .Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
             .Returns(operation.Id);
 
-        _factoryMock.Setup(x => x.Calculate(operation.MathOperation, operation.NumOne, operation.NumTwo))
+        _factoryMock
+            .Setup(x => x.Calculate(operation.MathOperation, operation.NumOne, operation.NumTwo))
             .Returns(expectedResult);
 
-        _utilsMock.Setup(x => x.StoreInCache(It.Is<PerformedOperation>(x => x.Id == operation.Id)));
+        _utilsMock
+            .Setup(x => x.StoreInCache(It.Is<PerformedOperation>(x => x.Id == operation.Id)));
 
         //Act
 
         var operationResult = _handler.Handle(request);
 
         //Assert
-        _unitOfWork.Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
+        _unitOfWorkMock
+            .Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
             Times.Once);
         result.Should().Be(operation.Result);
     }
@@ -81,7 +84,7 @@ public class CalculateHandlerTests
             .Create();
 
         var operation = _fixture.Build<PerformedOperation>()
-            .With(x => x.MathOperation, "soma")
+            .With(x => x.MathOperation, "invalid")
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
             .With(x => x.Result, 610)
@@ -90,25 +93,27 @@ public class CalculateHandlerTests
         var expectedResult = 610M;
         var message = "Operação não reconhecida";
 
-        _unitOfWork.Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
+        _unitOfWorkMock
+            .Setup(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()))
             .Returns(operation.Id);
 
-        _factoryMock.Setup(x => x.Calculate(operation.MathOperation, operation.NumOne, operation.NumTwo))
+        _factoryMock
+            .Setup(x => x.Calculate(request.MathOperation, request.NumOne, request.NumTwo))
             .Throws(new ArgumentException(message));
 
-        //_factoryMock.Setup(x => x.Calculate(request.MathOperation, It.IsAny<decimal>(), It.IsAny<decimal>()))
-        //    .Throws<ArgumentException>();
-
-
-        _utilsMock.Setup(x => x.StoreInCache(It.Is<PerformedOperation>(x => x.Id == operation.Id)));
+        _utilsMock
+            .Setup(x => x.StoreInCache(It.Is<PerformedOperation>(x => x.Id == operation.Id)));
 
         //Act
 
-        var result = _handler.Handle(request);
+        Action act = () => _handler.Handle(request);
 
         //Assert
-        _unitOfWork.Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
+
+        act.Should().Throw<ArgumentException>()
+            .WithMessage(message);
+
+        _unitOfWorkMock.Verify(x => x.DbContextRepository.Create(It.IsAny<PerformedOperation>()),
             Times.Never);
-        
     }
 }

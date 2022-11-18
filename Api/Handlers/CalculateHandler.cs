@@ -29,6 +29,8 @@ public class CalculateHandler : ICalculateHandler
 
     public decimal Handle(MathOperationRequest request)
     {
+        using var _ = this.MeasureTimeCurrentMethod();  
+
         var result = _operationFactory.Calculate(request.MathOperation, request.NumOne, request.NumTwo);
 
         var performedOperation = new PerformedOperation(request.MathOperation, request.NumOne, request.NumTwo, result);
