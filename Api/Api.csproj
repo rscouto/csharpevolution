@@ -10,6 +10,7 @@
     <PackageReference Include="FluentAssertions" Version="6.8.0" />
     <PackageReference Include="FluentValidation" Version="11.3.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

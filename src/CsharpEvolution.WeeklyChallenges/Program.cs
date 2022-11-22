@@ -2,7 +2,7 @@
 
 namespace CsharpEvolition.WeeklyChallenges
 {
-    class Program
+    class ProgramC
     {
         static void Main(string[] args)
         {

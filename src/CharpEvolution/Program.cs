@@ -1,8 +1,8 @@
 ﻿namespace CharpEvolution
 {
-    class Program
+    class ProgramB
     {
-        public Program()
+        public ProgramB()
         {
 
         }

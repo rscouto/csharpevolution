@@ -72,3 +72,4 @@ app.MapGet("/operations", (IGetHandler _get) =>
 
 app.Run();
 
+public partial class Program { }
