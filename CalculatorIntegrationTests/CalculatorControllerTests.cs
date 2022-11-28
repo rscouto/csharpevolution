@@ -12,23 +12,20 @@ using System.Threading.Tasks;
 namespace CalculatorIntegrationTests;
 public class CalculatorControllerTests
 {
-    private HttpClient _client;
-
     public CalculatorControllerTests()
     {
-        _client = CreateClient();
-    }
 
+    }
 
     [Fact]
     public async Task Given_a_get_request_should_return_ok_and_perfeormed_operations()
     {
-        
+        var (application, client) = await CreateDbMock();
 
         var url = "/operations";
 
-        var result = await _client.GetAsync(url);
-        var performedOperations = await _client.GetFromJsonAsync<List<PerformedOperation>>("/performedOperations");
+        var result = await client.GetAsync(url);
+        var performedOperations = await client.GetFromJsonAsync<List<PerformedOperation>>(url);
 
         result.StatusCode.Should().Be(HttpStatusCode.OK);
         performedOperations.Should().NotBeEmpty();
@@ -37,15 +34,25 @@ public class CalculatorControllerTests
 
 
 
-    public  HttpClient CreateClient()
+    private static async Task<CalculatorApiApplication> CreateDbMock2()
     {
         var application = new CalculatorApiApplication();
 
-        PerformedOperationMockData.CreatePerformedOperations(application, true);
+        await PerformedOperationMockData.CreatePerformedOperations(application, true);
+
+        var client = application.CreateClient();
+        return application;
+    }
+
+    public async Task<(CalculatorApiApplication, HttpClient)> CreateDbMock()
+    {
+        var application = new CalculatorApiApplication();
+
+        await PerformedOperationMockData.CreatePerformedOperations(application, true);
 
         var client = application.CreateClient();
 
-        return client;
+        return (application, client);
 
     }
 }
