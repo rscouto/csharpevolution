@@ -1,11 +1,17 @@
 ﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CsharpEvolution.Tests01.Persistence
 {
     public class PerformedOperationContext : DbContext
     {
         public PerformedOperationContext() : base()
+        {
+
+        }
+
+        public PerformedOperationContext(DbContextOptions<PerformedOperationContext> options) : base(options) 
         {
 
         }
