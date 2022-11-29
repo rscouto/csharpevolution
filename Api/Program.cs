@@ -8,6 +8,7 @@ using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ builder.Services.AddScoped<ICalculateHandler, CalculateHandler>();
 builder.Services.AddScoped<IGetHandler, GetHandler>();    
 
 builder.Services.AddScoped<IUtils, Utils>();
+
+builder.Services.AddScoped<WebApplicationFactory<Program>>();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IOperationCache, OperationCache>();
