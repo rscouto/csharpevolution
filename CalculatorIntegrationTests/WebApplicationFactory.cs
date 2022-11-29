@@ -1,30 +1,24 @@
-﻿using CsharpEvolution.Tests01.Persistence;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
+﻿//using CsharpEvolution.Tests01.Persistence;
+//using Microsoft.AspNetCore.Hosting;
+//using Microsoft.AspNetCore.Mvc.Testing;
+//using Microsoft.AspNetCore.TestHost;
 
-namespace CalculatorIntegrationTests;
-public class WebApplicationFactory 
-{
-    private readonly PerformedOperationContext _context;
-    private readonly HttpClient _client;
+//namespace CalculatorIntegrationTests;
+//public class WebApplicationFactory 
+//{
+//    private readonly PerformedOperationContext _context;
+//    private readonly HttpClient _client;
 
-    public WebApplicationFactory()
-    {
-        var builder = new WebHostBuilder()
-            //.UseEnvironment("Testing")
-            .UseStartup<Program>();
+//    public WebApplicationFactory()
+//    {
+//        var builder = new WebHostBuilder()
+//            //.UseEnvironment("Testing")
+//            .UseStartup<Program>();
 
-        var server = new TestServer(builder);
-        _context = server.Host.Services.GetService(typeof(PerformedOperationContext)) as PerformedOperationContext;
-        _client = server.CreateClient();
-    }
-
-    [Fact]	
-	public void Test()
-	{
-		var httpGetResult = _client.GetAsync($"\"/operations\"");
-
-	} 
-}
+//        var server = new TestServer(builder);
+//        _context = server.Host.Services.GetService(typeof(PerformedOperationContext)) as PerformedOperationContext;
+//        _client = server.CreateClient();
+//    }
+    
+//}
 
