@@ -1,6 +1,7 @@
 ﻿using Api.Handlers;
 using Api.Messages;
 using AutoFixture;
+using CsharpEvolution.Tests01.Domain.MathOperations.Enums;
 using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator.Common;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
@@ -26,17 +27,17 @@ public class CalculateHandlerTests
         _handler = new CalculateHandler(_unitOfWorkMock.Object, _utilsMock.Object, _factoryMock.Object);
     }
 
-    [InlineData("soma", 200, -500, -300)]
-    [InlineData("subtração", -200, -500, -700)]
-    [InlineData("multiplicação", 20, 60, 1200)]
-    [InlineData("divisão", 30, 120, 0.25)]
+    [InlineData(MathOperation.Addition, 200, -500, -300)]
+    [InlineData(MathOperation.Subtraction, -200, -500, -700)]
+    [InlineData(MathOperation.Multiplication, 20, 60, 1200)]
+    [InlineData(MathOperation.Division, 30, 120, 0.25)]
     [Theory]
-    public void Given_request_should_return_correct_result(string mathOperation, decimal numberOne, decimal numberTwo, decimal result)
+    public void Given_request_should_return_correct_result(MathOperation mathOperation, decimal numberOne, decimal numberTwo, decimal result)
     {
         //Arrange
 
         var request = _fixture.Build<MathOperationRequest>()
-            .With(x => x.MathOperation, mathOperation)
+            .With(x => x.operation, mathOperation)
             .With(x => x.NumOne, numberOne)
             .With(x => x.NumTwo, numberTwo)
             .Create();
@@ -78,13 +79,13 @@ public class CalculateHandlerTests
         //Arrange
 
         var request = _fixture.Build<MathOperationRequest>()
-            .With(x => x.MathOperation, "invalid")
+            .With(x => x.operation, null)
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
             .Create();
 
         var operation = _fixture.Build<PerformedOperation>()
-            .With(x => x.MathOperation, "invalid")
+            .With(x => x.MathOperation, null)
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
             .With(x => x.Result, 610)
@@ -98,7 +99,7 @@ public class CalculateHandlerTests
             .Returns(operation.Id);
 
         _factoryMock
-            .Setup(x => x.Calculate(request.MathOperation, request.NumOne, request.NumTwo))
+            .Setup(x => x.Calculate(request.operation, request.NumOne, request.NumTwo))
             .Throws(new ArgumentException(message));
 
         _utilsMock

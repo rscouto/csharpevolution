@@ -1,5 +1,6 @@
 using Api.Handlers;
 using Api.Messages;
+using CsharpEvolution.Tests01.Domain.MathOperations.Enums;
 using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator;
 using CsharpEvolution.Tests01.SimpleCalculator.Common;
@@ -23,7 +24,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IValidator<MathOperationRequest>, MathOperationRequestValidator>();
 
 builder.Services.AddScoped<ICalculateHandler, CalculateHandler>();
-builder.Services.AddScoped<IGetHandler, GetHandler>();    
+builder.Services.AddScoped<IGetHandler, GetHandler>();
 
 builder.Services.AddScoped<IUtils, Utils>();
 
@@ -39,14 +40,14 @@ builder.Services.AddScoped<SubtractionOperation>();
 builder.Services.AddScoped<MultiplicationOperation>();
 builder.Services.AddScoped<DivisionOperation>();
 
-builder.Services.AddScoped<IReadOnlyDictionary<OperationType, IOperation>>((provider) =>
+builder.Services.AddScoped<IReadOnlyDictionary<MathOperation, IOperation>>((provider) =>
 {
-    return new Dictionary<OperationType, IOperation>()
+    return new Dictionary<MathOperation, IOperation>()
                 {
-                    { OperationType.SOMA, provider.GetService<AdditionOperation>() },
-                    { OperationType.SUBTRAÇÃO, provider.GetService<SubtractionOperation>() },
-                    { OperationType.MULTIPLICAÇÃO, provider.GetService<MultiplicationOperation>() },
-                    { OperationType.DIVISÃO, provider.GetService<DivisionOperation>() },
+                    { MathOperation.Addition, provider.GetService<AdditionOperation>() },
+                    { MathOperation.Subtraction, provider.GetService<SubtractionOperation>() },
+                    { MathOperation.Multiplication, provider.GetService<MultiplicationOperation>() },
+                    { MathOperation.Division, provider.GetService<DivisionOperation>() },
                 };
 });
 

@@ -31,9 +31,9 @@ public class CalculateHandler : ICalculateHandler
     {
         using var _ = this.MeasureTimeCurrentMethod();  
 
-        var result = _operationFactory.Calculate(request.MathOperation, request.NumOne, request.NumTwo);
+        var result = _operationFactory.Calculate(request.operation, request.NumOne, request.NumTwo);
 
-        var performedOperation = new PerformedOperation(request.MathOperation, request.NumOne, request.NumTwo, result);
+        var performedOperation = new PerformedOperation(request.operation, request.NumOne, request.NumTwo, result);
 
         var persistedId = _unitOfWork.PerformedOperationRepository.Create(performedOperation);
 

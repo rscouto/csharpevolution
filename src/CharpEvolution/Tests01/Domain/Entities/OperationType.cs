@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace CsharpEvolution.Tests01.SimpleCalculator.Entities
+namespace CsharpEvolution.Tests01.SimpleCalculator.Entities;
+
+public enum OperationType
 {
-    public enum OperationType
-    {
-        SOMA = 1,
+    [Description("soma")]
+    addition = 1,
 
-        SUBTRAÇÃO = 2,
+    [Description("subtração")]
+    subtraction = 2,
 
-        MULTIPLICAÇÃO = 3,
+    [Description("multiplicação")]
+    multiplication = 3,
 
-        DIVISÃO = 4,
-    }
+    [Description("divisão")]
+    division = 4,
 }
