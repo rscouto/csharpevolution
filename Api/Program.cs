@@ -62,7 +62,6 @@ app.UseHttpsRedirection();
 
 app.MapPost("/operations", (
     MathOperationRequest request,
-    IValidator<MathOperationRequest> _mathOperationRequestValidator,
     ICalculateHandler _calculator) =>
 {
     return _calculator.Handle(request);
