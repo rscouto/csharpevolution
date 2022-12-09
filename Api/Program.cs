@@ -8,8 +8,10 @@ using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.Factory;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
+using FluentAssertions.Common;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//builder.Services.AddControllers()
+    //.AddNewtonsoftJson(options =>
+        //options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+//builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 builder.Services.AddScoped<PerformedOperationContext>();
 builder.Services.AddScoped<IPerformedOperationRepository, PerformedOperationRepository>();

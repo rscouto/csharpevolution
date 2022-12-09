@@ -1,5 +1,7 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+﻿using CsharpEvolution.Tests01.Domain.MathOperations.Enums;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CsharpEvolution.Tests01.Persistence
 {
@@ -16,13 +18,18 @@ namespace CsharpEvolution.Tests01.Persistence
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var modelBuilder = new ModelBuilder(); 
+            var modelBuilder = new ModelBuilder();
             modelBuilder.Entity<PerformedOperation>(p =>
                 {
                     p.Property(p => p.Id)
                     .ValueGeneratedOnAdd();
-                    
+
                     p.HasKey(p => p.Id);
+
+                    p.Property(p => p.MathOperation)
+                    .HasConversion(
+                        o => o.ToString(),
+                        o => (MathOperation)Enum.Parse(typeof(MathOperation), o));
 
                     p.Property(p => p.NumOne)
                     .HasColumnType("decimal(18,4)")
@@ -34,7 +41,7 @@ namespace CsharpEvolution.Tests01.Persistence
 
                     p.Property(p => p.Result)
                     .HasColumnType("decimal(18,4)")
-                    .IsRequired();   
+                    .IsRequired();
                 });
             optionsBuilder.UseSqlServer(connectionString);
         }

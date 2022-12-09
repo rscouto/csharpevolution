@@ -21,11 +21,8 @@ public class MathOperationFactory : IMathOperationFactory
     }
     public decimal Calculate(MathOperation mathOperation, decimal number1, decimal number2)
     {
-        //Enum.TryParse(mathOperation, true, out OperationType operationType);
         _operations.TryGetValue(mathOperation, out var handler);
-        //if (!_operations.TryGetValue(operationType, out var handler))
-          //  throw new ArgumentException("Operação não reconhecida");
+
         return handler.Calculate(number1, number2);
-        
     }
 }
