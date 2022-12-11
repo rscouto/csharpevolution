@@ -1,7 +1,5 @@
 ﻿using CsharpEvolution.Tests01.Domain.MathOperations.Enums;
-using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using CsharpEvolution.Tests01.SimpleCalculator.MathOperations.Interfaces;
-using System;
 using System.Collections.Generic;
 
 namespace CsharpEvolution.Tests01.SimpleCalculator.Factory;

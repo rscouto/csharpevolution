@@ -1,5 +1,4 @@
-﻿using CsharpEvolution.Tests01.Domain.Entities.Messages;
-using CsharpEvolution.Tests01.Persistence;
+﻿using CsharpEvolution.Tests01.Persistence;
 using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 
 namespace Api.Handlers;

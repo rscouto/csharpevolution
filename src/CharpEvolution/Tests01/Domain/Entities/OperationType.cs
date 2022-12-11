@@ -1,18 +1,18 @@
-﻿using System.ComponentModel;
+﻿//using System.ComponentModel;
 
-namespace CsharpEvolution.Tests01.SimpleCalculator.Entities;
+//namespace CsharpEvolution.Tests01.SimpleCalculator.Entities;
 
-public enum OperationType
-{
-    [Description("soma")]
-    addition = 1,
+//public enum OperationType
+//{
+//    [Description("soma")]
+//    addition = 1,
 
-    [Description("subtração")]
-    subtraction = 2,
+//    [Description("subtração")]
+//    subtraction = 2,
 
-    [Description("multiplicação")]
-    multiplication = 3,
+//    [Description("multiplicação")]
+//    multiplication = 3,
 
-    [Description("divisão")]
-    division = 4,
-}
+//    [Description("divisão")]
+//    division = 4,
+//}

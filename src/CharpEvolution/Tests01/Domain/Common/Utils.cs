@@ -1,4 +1,5 @@
-﻿using CsharpEvolution.Tests01.SimpleCalculator.Entities;
+﻿using CsharpEvolution.Tests01.Infrastructure;
+using CsharpEvolution.Tests01.SimpleCalculator.Entities;
 using System;
 using System.IO;
 using System.Linq;

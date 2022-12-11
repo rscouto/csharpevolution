@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 
-namespace CsharpEvolution.Tests01.SimpleCalculator
+namespace CsharpEvolution.Tests01.Infrastructure
 {
     public interface IOperationCache
     {
@@ -30,14 +30,14 @@ namespace CsharpEvolution.Tests01.SimpleCalculator
             }
             else
             {
-            _cache.Set(key, operations);
-            return operations;
+                _cache.Set(key, operations);
+                return operations;
             }
         }
 
         public void AddToCache(PerformedOperation operation)
         {
-            
+
             listOfOperations.Add(operation);
 
             var option = new MemoryCacheEntryOptions()

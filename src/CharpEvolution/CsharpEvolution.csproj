@@ -34,4 +34,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tests01\Domain\Entities\Messages\" />
+  </ItemGroup>
+
 </Project>
