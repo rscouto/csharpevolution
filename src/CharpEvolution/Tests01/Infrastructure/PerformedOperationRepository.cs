@@ -26,7 +26,6 @@ namespace CsharpEvolution.Tests01.Persistence
             using var _ = this.MeasureTimeCurrentMethod(); 
 
             _operationContext.Operations.Add(operation);
-            //_operationContext.SaveChanges();
 
             return operation.Id;
         }
@@ -38,11 +37,8 @@ namespace CsharpEvolution.Tests01.Persistence
             var query = from op in _operationContext.Operations
                         orderby op.Id descending
                         select op;
-                      
 
-            var result = query.ToList();
-
-            return result;
+            return query.ToList();
         }
     }
 }

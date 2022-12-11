@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CsharpEvolution.Migrations
 {
     [DbContext(typeof(PerformedOperationContext))]
-    [Migration("20221209152806_Operations")]
+    [Migration("20221211182553_Operations")]
     partial class Operations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -27,9 +27,10 @@ namespace CsharpEvolution.Tests01.Persistence
                     p.HasKey(p => p.Id);
 
                     p.Property(p => p.MathOperation)
-                    .HasConversion(
-                        o => o.ToString(),
-                        o => (MathOperation)Enum.Parse(typeof(MathOperation), o));
+                    .HasConversion<int>();
+                        //o => o.ToString(),
+                        //o => (MathOperation)Enum.Parse(typeof(MathOperation), o))
+                    
 
                     p.Property(p => p.NumOne)
                     .HasColumnType("decimal(18,4)")

@@ -14,7 +14,7 @@ namespace CsharpEvolution.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MathOperation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MathOperation = table.Column<int>(type: "int", nullable: false),
                     NumOne = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NumTwo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Result = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
