@@ -79,13 +79,13 @@ public class CalculateHandlerTests
         //Arrange
 
         var request = _fixture.Build<MathOperationRequest>()
-            .With(x => x.operation, null)
+            .Without(x => x.operation)
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
             .Create();
 
         var operation = _fixture.Build<PerformedOperation>()
-            .With(x => x.MathOperation, null)
+            .Without(x => x.MathOperation)
             .With(x => x.NumOne, 366)
             .With(x => x.NumTwo, 244)
             .With(x => x.Result, 610)
