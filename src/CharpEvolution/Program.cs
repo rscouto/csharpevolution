@@ -1,12 +1,16 @@
-﻿using System;
-
-namespace CharpEvolution
+﻿namespace CharpEvolution
 {
-    class Program
+    class ProgramB
     {
+        public ProgramB()
+        {
+
+        }
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
         }
+        
     }
 }
